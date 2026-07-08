@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,16 +26,19 @@ public class ExpenseController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ExpenseDto> create(@PathVariable Long tripId, @Valid @RequestBody ExpenseDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(expenseService.create(tripId, dto));
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<ExpenseDto>> list(@PathVariable Long tripId) {
         return ResponseEntity.ok(expenseService.list(tripId));
     }
 
     @PutMapping("/{expenseId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ExpenseDto> update(
             @PathVariable Long tripId,
             @PathVariable Long expenseId,
@@ -44,6 +48,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/{expenseId}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> delete(@PathVariable Long tripId, @PathVariable Long expenseId) {
         expenseService.delete(tripId, expenseId);
         return ResponseEntity.noContent().build();
