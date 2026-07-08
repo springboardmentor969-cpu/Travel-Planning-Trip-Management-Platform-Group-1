@@ -1,10 +1,12 @@
 package com.tripnest.service;
 
 import com.tripnest.dto.UserDto;
+import com.tripnest.entity.Role;
 import com.tripnest.entity.User;
 import com.tripnest.exception.DuplicateResourceException;
 import com.tripnest.exception.ResourceNotFoundException;
 import com.tripnest.mapper.UserMapper;
+import com.tripnest.repository.RoleRepository;
 import com.tripnest.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public UserDto create(UserDto dto) {
@@ -40,6 +44,19 @@ public class UserService {
                     throw new DuplicateResourceException("A user with this email already exists");
                 });
         UserMapper.updateEntity(user, dto);
+        return UserMapper.toDto(userRepository.save(user));
+    }
+
+    public void delete(Long id) {
+        User user = findEntity(id);
+        userRepository.delete(user);
+    }
+
+    public UserDto updateRole(Long id, String roleName) {
+        User user = findEntity(id);
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found: " + roleName));
+        user.setRole(role);
         return UserMapper.toDto(userRepository.save(user));
     }
 
