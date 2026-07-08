@@ -1,34 +1,40 @@
-# TripNest
+# TripNest ✈️
 
-TripNest is a full-stack travel planning MVP built with Spring Boot 3, Java 21, MySQL, React, Vite, Axios, React Router, Tailwind CSS, and Lucide React.
+TripNest is a full-stack travel planning and trip management MVP built with a modern backend and responsive frontend. It enables travelers to create trips, plan daily itineraries, track expenses, and view dynamic budget analysis through a comprehensive dashboard.
 
-## Features
+---
 
-- Create, view, and update users
-- Create, edit, delete, view, and list trips
-- Add, edit, and delete itinerary days
-- Track expenses and remaining budget
-- Dashboard with trip count, upcoming trips, total expenses, and remaining budget
+## 🛠️ Tech Stack & Technologies
 
-## Project Structure
+### Backend
+- **Core**: Spring Boot 3.3.5, Java 21
+- **Security**: Spring Security (JWT-based Token Authentication)
+- **Data Access**: Spring Data JPA / Hibernate
+- **Database**: MySQL / MariaDB
 
-```text
-backend/   Spring Boot REST API
-frontend/  React Vite app
-docs/      SQL schema, sample data, API docs, Postman collection
-```
+### Frontend
+- **Framework**: React 18 (Vite-powered SPA)
+- **Styling**: Tailwind CSS v3 & Lucide React (icons)
+- **HTTP Client**: Axios (configured with interceptors to automatically forward Bearer tokens)
+- **Routing**: React Router v6
 
-## Quick Start On This Machine
+---
 
-This workspace already has local runtime tools downloaded under `.tools/`:
+## 📋 Prerequisites
 
-- Maven: `.tools/apache-maven-3.9.11`
-- Portable MariaDB: `.tools/mariadb-11.4.5-winx64`
-- MariaDB data directory: `.tools/mariadb-data`
+Before running the application, make sure you have the following installed:
+- **Java Development Kit (JDK)**: Version 21 or higher
+- **Node.js**: Version 18 or higher (with `npm`)
+- **MySQL / MariaDB**: Or use the pre-packaged portable MariaDB included in this project workspace under `.tools/`.
 
-Use these commands from the project root in PowerShell.
+---
 
-### 1. Start MariaDB
+## 🚀 Quick Start (First-Time Setup and Running)
+
+Follow this step-by-step guide from your project root directory using **PowerShell** on Windows.
+
+### Step 1: Start MariaDB Database
+The repository comes pre-packaged with a portable database. Run this script in PowerShell to launch MariaDB in the background:
 
 ```powershell
 $data = Join-Path (Get-Location) ".tools\mariadb-data"
@@ -36,36 +42,38 @@ $exe = Join-Path (Get-Location) ".tools\mariadb-11.4.5-winx64\bin\mariadbd.exe"
 Start-Process -FilePath $exe -ArgumentList "--datadir=$data","--port=3306","--bind-address=127.0.0.1","--skip-ssl" -WindowStyle Hidden
 ```
 
-Verify the database is running:
+Verify that the database is running and accepting connections:
 
 ```powershell
 .\.tools\mariadb-11.4.5-winx64\bin\mariadb.exe --host=127.0.0.1 --port=3306 --user=root --password=password --ssl=0 -e "SELECT VERSION();"
 ```
 
-### 2. Load Schema And Sample Data
+> [!NOTE]
+> Database tables and constraints are managed by Hibernate. On application startup, the backend automatically generates tables via `ddl-auto=update` and runs a setup initializer to insert user/admin roles.
 
-```powershell
-.\.tools\mariadb-11.4.5-winx64\bin\mariadb.exe --host=127.0.0.1 --port=3306 --user=root --password=password --ssl=0 -e "source D:/Projects/TripNest/docs/schema.sql; source D:/Projects/TripNest/docs/sample-data.sql;"
-```
+---
 
-### 3. Start The Backend
+### Step 2: Install & Start the Backend API Server
+Open a PowerShell window, navigate to the `backend` directory, and run the server using the local Maven installation:
 
 ```powershell
 cd backend
 ..\.tools\apache-maven-3.9.11\bin\mvn.cmd spring-boot:run
 ```
 
-The API runs at `http://localhost:8080/api`.
+- The API server will boot up and listen on **`http://localhost:8080`**.
+- Verify that the server is responding (you should receive a `401 Unauthorized` response which confirms security endpoints are active):
+  ```powershell
+  Invoke-WebRequest -UseBasicParsing http://localhost:8080/api/dashboard
+  ```
 
-Check it:
+---
 
-```powershell
-Invoke-WebRequest -UseBasicParsing http://localhost:8080/api/dashboard
-```
+### Step 3: Install & Start the Frontend Web App
+Open a **second** PowerShell window, navigate to the `frontend` directory, install dependencies, and start Vite:
 
-### 4. Start The Frontend
-
-Open a second PowerShell window:
+> [!WARNING]
+> On Windows PowerShell, running raw `npm` commands may fail due to the system's script execution policy (`UnauthorizedAccess`). To avoid this, explicitly invoke **`npm.cmd`**.
 
 ```powershell
 cd frontend
@@ -73,67 +81,60 @@ npm.cmd install
 npm.cmd run dev
 ```
 
-The web app runs at `http://localhost:5173`.
+- The web app will start and listen on **`http://localhost:5173/`**.
+- Open your browser and navigate to `http://localhost:5173/`. You will be redirected to the login/registration screen to create your user account.
 
-## Standard Backend Setup
+---
 
-Requirements: Java 21, Maven, MySQL or MariaDB.
+## 🧪 Running Integration Tests
 
-Create the database:
+An automated, full-flow integration test script is located in `scripts/api_test_flow.js`. This script tests the backend's entire REST API flow including user registration, trip creation, itinerary additions, expense logging, budget updating, and cleanup/deletion.
 
-```sql
-CREATE DATABASE tripnest;
-```
+To execute the test:
+1. Ensure both the MariaDB database and Spring Boot backend are running.
+2. Open a PowerShell window, navigate to the `frontend` folder (to resolve standard node modules), and execute the script:
+   ```powershell
+   cd frontend
+   node ../scripts/api_test_flow.js
+   ```
 
-Configure MySQL using environment variables or edit `backend/src/main/resources/application.properties`.
+---
+
+## 📁 Repository Structure
 
 ```text
-DB_URL=jdbc:mysql://localhost:3306/tripnest?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-DB_USERNAME=root
-DB_PASSWORD=password
+TripNest/
+├── backend/            # Spring Boot REST API
+│   ├── src/main/java   # Java Source (Entities, Controllers, DTOs, Services, Config)
+│   └── pom.xml         # Maven configuration
+├── frontend/           # React + Vite client application
+│   ├── src/            # Components, Pages, Layouts, Contexts
+│   └── package.json    # Frontend package configuration
+├── scripts/            # Build, test, and utility scripts
+│   └── api_test_flow.js# End-to-end API integration test flow script
+└── docs/               # Architecture notes, API specifications, and Postman collections
 ```
 
-Run the API:
+---
 
-```bash
-cd backend
-mvn spring-boot:run
-```
+## 💡 Troubleshooting & Port Configuration
 
-The API runs on `http://localhost:8080/api`.
+### Port Conflicts
+If you encounter errors saying address is already in use:
 
-## Standard Frontend Setup
+1. **Find conflicting process ID (PID)**:
+   ```powershell
+   # Find process using Port 8080 (Backend)
+   netstat -ano | findstr 8080
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+   # Find process using Port 5173 (Frontend)
+   netstat -ano | findstr 5173
+   ```
+2. **Terminate the process**:
+   ```powershell
+   taskkill /F /PID <PID_FROM_COMMAND_ABOVE>
+   ```
 
-The app runs on `http://localhost:5173`.
-
-Set `VITE_API_URL` if your backend is not on `http://localhost:8080/api`.
-
-## Database Artifacts
-
-- Schema: `docs/schema.sql`
-- Sample data: `docs/sample-data.sql`
-
-You can load both with MySQL:
-
-```bash
-mysql -u root -p < docs/schema.sql
-mysql -u root -p < docs/sample-data.sql
-```
-
-## API Documentation
-
-See `docs/api.md`.
-
-## Postman
-
-Import `docs/postman_collection.json` into Postman.
-
-## MVP Scope
-
-This project intentionally excludes authentication, OAuth, Spring Security, email, notifications, maps, weather APIs, payments, analytics, Docker, cloud deployment, and file uploads.
+### Custom Configurations
+- **Database Connection**: Update `backend/src/main/resources/application.properties` (set `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`).
+- **Frontend API Endpoint**: Alter the `VITE_API_URL` environment variable or edit `frontend/src/api/client.js` (defaults to `http://localhost:8080/api`).
