@@ -1,0 +1,129 @@
+/* ===========================
+   Global Reset
+=========================== */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+
+    transition:
+        background-color .3s ease,
+        color .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+
+}
+
+/* ===========================
+   Page
+=========================== */
+
+html,
+body,
+#root{
+
+    width:100%;
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+    background:var(--bg-color);
+
+    color:var(--text-color);
+
+}
+
+/* ===========================
+   Dashboard Layout
+=========================== */
+
+.dashboard{
+
+    display:flex;
+
+    width:100%;
+
+    min-height:100vh;
+
+    background:var(--bg-color);
+
+}
+
+/* ===========================
+   Main Content
+=========================== */
+
+.main-content{
+
+    flex:1;
+    width:100%;
+
+    margin:0;
+
+    padding:20px 24px 40px;
+
+    background:var(--bg-color);
+
+}
+
+/* ===========================
+   Trip Grid
+=========================== */
+
+.trip-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+
+    gap:30px;
+
+    margin-top:25px;
+
+}
+
+/* ===========================
+   Empty State
+=========================== */
+
+.trip-grid h2{
+
+    color:var(--text-color);
+
+}
+
+.trip-grid p{
+
+    color:var(--secondary-text);
+
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:992px){
+
+    .main-content{
+
+        padding:16px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .trip-grid{
+
+        grid-template-columns:1fr;
+
+        gap:20px;
+
+    }
+
+}

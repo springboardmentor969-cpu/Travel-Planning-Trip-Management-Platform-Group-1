@@ -1,0 +1,127 @@
+.popular-destinations{
+
+    padding:100px 8%;
+
+    background:#f8fafc;
+
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.section-title h2{
+    font-size:42px;
+    color:#0f172a;
+}
+
+.section-title p{
+    margin-top:12px;
+    color:#64748b;
+}
+
+.destination-card{
+
+    background:white;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    transition:.4s;
+
+    cursor:pointer;
+
+}
+
+.destination-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.destination-card img{
+
+    width:100%;
+
+    height:260px;
+
+    object-fit:cover;
+
+    transition:.5s;
+
+}
+
+.destination-card:hover img{
+
+    transform:scale(1.08);
+
+}
+
+.destination-info{
+
+    padding:22px;
+
+}
+
+.destination-info h3{
+
+    font-size:28px;
+
+    margin-bottom:10px;
+
+}
+
+.destination-info p{
+
+    color:#64748b;
+
+    margin-bottom:20px;
+
+}
+
+.card-bottom{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.card-bottom span{
+
+    color:#f59e0b;
+
+    font-weight:700;
+
+}
+
+.card-bottom button{
+
+    border:none;
+
+    background:#0ea5e9;
+
+    color:white;
+
+    padding:10px 22px;
+
+    border-radius:25px;
+
+    cursor:pointer;
+
+}
+
+.swiper-button-next,
+.swiper-button-prev{
+
+    color:#0ea5e9;
+
+    font-weight:bold;
+
+}

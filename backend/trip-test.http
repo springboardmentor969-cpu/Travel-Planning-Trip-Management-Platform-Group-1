@@ -1,0 +1,18 @@
+### Create Trip
+POST http://localhost:8080/api/trips
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "tripName": "Goa Vacation",
+  "destination": "Goa",
+  "startDate": "2026-08-01",
+  "endDate": "2026-08-05",
+  "budget": 25000,
+  "status": "PLANNED",
+  "description": "Family Trip"
+}
+
+
+
+GET http://localhost:8080/api/trips

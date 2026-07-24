@@ -1,0 +1,513 @@
+/* ===================================================
+   LIGHT THEME
+=================================================== */
+
+:root{
+
+    --bg-color:#f5f7fb;
+
+    --surface:#ffffff;
+
+    --card-bg:#ffffff;
+
+    --modal-bg:#ffffff;
+
+    --sidebar-bg:#0f172a;
+
+    --input-bg:#ffffff;
+
+    --border:#e5e7eb;
+
+    --shadow:0 12px 30px rgba(15,23,42,.08);
+
+}
+
+/* ===================================================
+   DARK THEME
+=================================================== */
+
+[data-theme="dark"]{
+
+    --bg-color:#0b1120;
+
+    --surface:#111827;
+
+    --card-bg:#1e293b;
+
+    --modal-bg:#1f2937;
+
+    --sidebar-bg:#020617;
+
+    --input-bg:#0f172a;
+
+    --border:#334155;
+
+    --shadow:0 16px 35px rgba(0,0,0,.45);
+
+}
+
+/* ===================================================
+   PAGE
+=================================================== */
+
+body,
+html,
+#root,
+.dashboard,
+.main-content{
+
+    background:var(--bg-color);
+
+}
+
+/* ===================================================
+   CARDS
+=================================================== */
+
+.trip-card,
+.trip-toolbar,
+.action-card{
+
+    background:var(--card-bg);
+
+    border:1px solid var(--border);
+
+    box-shadow:var(--shadow);
+
+}
+
+/* ===================================================
+   MODALS
+=================================================== */
+
+.trip-modal,
+.view-modal,
+.share-modal,
+.timeline-modal{
+
+    background:var(--modal-bg);
+
+    border:1px solid var(--border);
+
+}
+
+/* ===================================================
+   INPUTS
+=================================================== */
+
+input,
+textarea,
+select{
+
+    background:var(--input-bg);
+
+    border:1px solid var(--border);
+
+}
+
+/* ===================================================
+   SEARCH BOXES
+=================================================== */
+
+.trip-search{
+
+    background:var(--input-bg);
+
+    border:1px solid var(--border);
+
+}
+
+.search-box{
+
+    background:var(--input-bg);
+
+}
+
+/* ===================================================
+   PROFILE MENU
+=================================================== */
+
+.profile-menu{
+
+    background:var(--card-bg);
+
+    border:1px solid var(--border);
+
+}
+
+/* ===================================================
+   SIDEBAR
+=================================================== */
+
+.sidebar{
+
+    background:var(--sidebar-bg);
+
+}
+
+/* ===================================================
+   BUTTONS
+=================================================== */
+
+.status-buttons button{
+
+    border:1px solid var(--border);
+
+    background:var(--input-bg);
+
+}
+
+.modal-header button{
+
+    background:var(--input-bg);
+
+    border:1px solid var(--border);
+
+}
+
+.cancel-btn{
+
+    background:var(--input-bg);
+
+    border:1px solid var(--border);
+
+}
+
+/* ===================================================
+   TRIP ACTIONS
+=================================================== */
+
+.trip-actions{
+
+    border-top:1px solid var(--border);
+
+}
+
+/* ===============================
+   TEXT COLORS - DARK MODE
+================================*/
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4,
+body.dark-theme h5,
+body.dark-theme h6{
+    color:#ffffff !important;
+}
+
+body.dark-theme p,
+body.dark-theme span,
+body.dark-theme label,
+body.dark-theme small,
+body.dark-theme strong{
+    color:#e5e7eb !important;
+}
+
+/* Inputs */
+
+body.dark-theme input,
+body.dark-theme textarea,
+body.dark-theme select{
+    color:#ffffff !important;
+}
+
+/* Placeholder */
+
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder{
+    color:#94a3b8;
+}
+
+/* Links */
+
+body.dark-theme a{
+    color:#60a5fa;
+}
+
+/* Toolbar */
+
+body.dark-theme .toolbar-header h2,
+body.dark-theme .section-title,
+body.dark-theme .trip-content h3,
+body.dark-theme .view-body h2,
+body.dark-theme .modal-header h2,
+body.dark-theme .profile-info h4{
+    color:#ffffff !important;
+}
+
+/* Secondary Text */
+
+body.dark-theme .trip-description,
+body.dark-theme .trip-details,
+body.dark-theme .detail,
+body.dark-theme .toolbar-header p,
+body.dark-theme .profile-info small{
+    color:#cbd5e1 !important;
+}
+
+/* Icons */
+
+body.dark-theme svg{
+    color:inherit;
+}
+
+/* ==========================================
+   FORCE TEXT COLORS IN DARK MODE
+========================================== */
+
+body.dark-theme,
+body.dark-theme *{
+    color:#f1f5f9;
+}
+
+/* Headings */
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4,
+body.dark-theme h5,
+body.dark-theme h6{
+    color:#ffffff !important;
+}
+
+/* Paragraphs */
+
+body.dark-theme p,
+body.dark-theme span,
+body.dark-theme small,
+body.dark-theme label{
+    color:#cbd5e1 !important;
+}
+
+/* Trip Card */
+
+body.dark-theme .trip-content h3{
+    color:#ffffff !important;
+}
+
+body.dark-theme .trip-description,
+body.dark-theme .trip-details,
+body.dark-theme .trip-location{
+    color:#d1d5db !important;
+}
+
+/* Toolbar */
+
+body.dark-theme .toolbar-header h2{
+    color:#ffffff !important;
+}
+
+body.dark-theme .toolbar-header p{
+    color:#cbd5e1 !important;
+}
+
+/* Quick Actions */
+
+body.dark-theme .section-title,
+body.dark-theme .action-card h3{
+    color:#ffffff !important;
+}
+
+body.dark-theme .action-card p{
+    color:#cbd5e1 !important;
+}
+
+/* Modals */
+
+body.dark-theme .modal-header h2,
+body.dark-theme .view-body h2,
+body.dark-theme .view-body h3{
+    color:#ffffff !important;
+}
+
+body.dark-theme .detail,
+body.dark-theme .profile-info small{
+    color:#cbd5e1 !important;
+}
+
+/* Forms */
+
+body.dark-theme input,
+body.dark-theme textarea,
+body.dark-theme select{
+    color:#ffffff !important;
+}
+
+/* ===================================================
+   CREATE TRIP MODAL - DARK MODE FIX
+=================================================== */
+
+body.dark-theme .trip-modal{
+    background:#1f2937 !important;
+    color:#ffffff !important;
+}
+
+body.dark-theme .modal-header h2{
+    color:#ffffff !important;
+}
+
+body.dark-theme .form-group label{
+    color:#ffffff !important;
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group textarea,
+body.dark-theme .form-group select{
+    background:#0f172a !important;
+    color:#ffffff !important;
+    border:1px solid #475569 !important;
+}
+
+body.dark-theme .form-group input::placeholder,
+body.dark-theme .form-group textarea::placeholder{
+    color:#94a3b8 !important;
+}
+
+body.dark-theme .cancel-btn{
+    background:#334155 !important;
+    color:#ffffff !important;
+}
+
+body.dark-theme .save-btn{
+    background:#2563eb !important;
+    color:#ffffff !important;
+}
+
+body.dark-theme .modal-header button{
+    background:#334155 !important;
+    color:#ffffff !important;
+}
+
+body.dark-theme .modal-header button svg{
+    color:#ffffff !important;
+}
+
+/* ===================================================
+   DARK MODE TEXT FIXES
+=================================================== */
+
+body.dark-theme{
+    color:#f8fafc;
+}
+
+/* Modal */
+
+body.dark-theme .trip-modal,
+body.dark-theme .view-modal{
+    color:#f8fafc;
+}
+
+/* Modal Titles */
+
+body.dark-theme .modal-header h2,
+body.dark-theme .view-body h2,
+body.dark-theme .view-body h3{
+    color:#ffffff !important;
+}
+
+/* Labels */
+
+body.dark-theme .form-group label{
+    color:#e2e8f0 !important;
+}
+
+/* Inputs */
+
+body.dark-theme input,
+body.dark-theme textarea,
+body.dark-theme select{
+    background:#0f172a !important;
+    color:#ffffff !important;
+    border:1px solid #475569 !important;
+}
+
+/* Placeholder */
+
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder{
+    color:#94a3b8 !important;
+}
+
+/* Select */
+
+body.dark-theme select option{
+    background:#0f172a;
+    color:#ffffff;
+}
+
+/* Trip Toolbar */
+
+body.dark-theme .toolbar-header h2{
+    color:#ffffff !important;
+}
+
+body.dark-theme .toolbar-header p{
+    color:#cbd5e1 !important;
+}
+
+/* Quick Actions */
+
+body.dark-theme .section-title,
+body.dark-theme .action-card h3{
+    color:#ffffff !important;
+}
+
+body.dark-theme .action-card p{
+    color:#cbd5e1 !important;
+}
+
+/* Trip Card */
+
+body.dark-theme .trip-content h3{
+    color:#ffffff !important;
+}
+
+body.dark-theme .trip-location{
+    color:#60a5fa !important;
+}
+
+body.dark-theme .trip-description,
+body.dark-theme .trip-details{
+    color:#cbd5e1 !important;
+}
+
+/* View Modal */
+
+body.dark-theme .detail{
+    color:#e2e8f0 !important;
+}
+
+body.dark-theme .view-body p{
+    color:#cbd5e1 !important;
+}
+
+/* Profile Menu */
+
+body.dark-theme .profile-info h4{
+    color:#ffffff !important;
+}
+
+body.dark-theme .profile-info small{
+    color:#cbd5e1 !important;
+}
+
+/* Search */
+
+body.dark-theme .trip-search input,
+body.dark-theme .search-box input{
+    color:#ffffff !important;
+}
+
+/* Buttons that contain text */
+
+body.dark-theme button{
+    color:inherit;
+}
+
+/* Links */
+
+body.dark-theme a{
+    color:#60a5fa;
+}

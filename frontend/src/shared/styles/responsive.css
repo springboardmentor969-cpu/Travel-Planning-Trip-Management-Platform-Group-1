@@ -1,0 +1,141 @@
+/* ===========================
+   TABLET
+=========================== */
+
+@media (max-width:1100px){
+
+    .stats-container{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .trip-grid{
+        grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    }
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .header-right{
+        width:100%;
+        justify-content:space-between;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width:768px){
+
+    .main-content{
+        padding:15px;
+    }
+
+    .hero{
+        height:300px;
+    }
+
+    .hero h1{
+        font-size:34px;
+    }
+
+    .hero p{
+        width:100%;
+        font-size:15px;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+        width:100%;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+        width:100%;
+    }
+
+    .stats-container{
+        grid-template-columns:1fr;
+    }
+
+    .trip-grid{
+        grid-template-columns:1fr;
+    }
+
+    .toolbar-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .toolbar-controls{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .trip-search{
+        width:100%;
+        min-width:100%;
+    }
+
+    .status-buttons{
+        flex-wrap:wrap;
+    }
+
+    .double-input{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+
+@media (max-width:480px){
+
+    .header{
+        padding:15px;
+    }
+
+    .header-left h2{
+        font-size:22px;
+    }
+
+    .search-box{
+        padding:10px 15px;
+    }
+
+    .trip-card{
+        border-radius:15px;
+    }
+
+    .trip-content{
+        padding:18px;
+    }
+
+    .trip-content h3{
+        font-size:20px;
+    }
+
+    .trip-details{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .trip-actions{
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+}

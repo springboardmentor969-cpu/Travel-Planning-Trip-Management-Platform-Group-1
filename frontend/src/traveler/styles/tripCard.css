@@ -1,0 +1,333 @@
+.trip-card{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+
+    transition:.35s;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.trip-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 22px 45px rgba(15,23,42,.18);
+
+}
+
+/* ===========================
+   IMAGE
+=========================== */
+
+.trip-image{
+
+    position:relative;
+
+    height:220px;
+
+    overflow:hidden;
+
+}
+
+.trip-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.5s;
+
+}
+
+.trip-card:hover .trip-image img{
+
+    transform:scale(1.08);
+
+}
+
+/* ===========================
+   FAVOURITE
+=========================== */
+
+.favorite-btn{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.95);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    color:#94a3b8;
+
+    transition:.3s;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+
+}
+
+.favorite-btn:hover{
+
+    transform:scale(1.08);
+
+}
+
+.favorite-btn svg{
+
+    transition:.3s;
+
+}
+
+.favorite-btn svg[data-icon="heart"]{
+
+    color:#ef4444;
+
+}
+
+.favorite-btn:hover svg{
+
+    color:#ef4444;
+
+}
+
+/* ===========================
+   STATUS
+=========================== */
+
+.trip-status{
+
+    position:absolute;
+
+    top:18px;
+
+    right:18px;
+
+    padding:10px 22px;
+
+    border-radius:30px;
+
+    color:#fff;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    text-transform:capitalize;
+
+}
+
+.trip-status.planned{
+
+    background:#2563eb;
+
+}
+
+.trip-status.upcoming{
+
+    background:#f59e0b;
+
+}
+
+.trip-status.completed{
+
+    background:#16a34a;
+
+}
+
+/* ===========================
+   CONTENT
+=========================== */
+
+.trip-content{
+
+    padding:24px;
+
+}
+
+.trip-content h3{
+
+    margin-bottom:12px;
+
+    color:#0f172a;
+
+    font-size:30px;
+
+}
+
+.trip-location{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#2563eb;
+
+    font-weight:600;
+
+    margin-bottom:16px;
+
+}
+
+.trip-description{
+
+    color:#64748b;
+
+    line-height:1.6;
+
+    margin-bottom:20px;
+
+}
+
+.trip-details{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    color:#475569;
+
+}
+
+.trip-details div{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+/* ===========================
+   ACTIONS
+=========================== */
+
+.trip-actions{
+
+    display:flex;
+
+    justify-content:space-evenly;
+
+    align-items:center;
+
+    padding:18px 10px;
+
+    border-top:1px solid #ececec;
+
+}
+
+.action-btn{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    background:transparent;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:21px;
+
+    color:#64748b;
+
+    transition:.25s;
+
+}
+
+.action-btn:hover{
+
+    background:#f3f4f6;
+
+    transform:translateY(-3px);
+
+}
+
+.view-btn:hover{
+
+    color:#2563eb;
+
+}
+
+.edit-btn:hover{
+
+    color:#16a34a;
+
+}
+
+.timeline-btn:hover{
+
+    color:#7c3aed;
+
+}
+
+.share-btn:hover{
+
+    color:#0891b2;
+
+}
+
+.delete-btn:hover{
+
+    color:#ef4444;
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .trip-content h3{
+
+        font-size:24px;
+
+    }
+
+}

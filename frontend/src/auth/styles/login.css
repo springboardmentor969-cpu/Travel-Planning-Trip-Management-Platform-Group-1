@@ -1,0 +1,448 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+.login-page{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* =======================
+VIDEO
+======================= */
+
+.background-video{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-2;
+}
+
+/* Dark Overlay */
+
+.video-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:-1;
+}
+
+/* =======================
+CARD
+======================= */
+
+.login-card{
+
+    width:430px;
+    max-width:92%;
+
+    padding:45px;
+
+    border-radius:28px;
+
+    background:rgba(18,25,38,.25);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+
+    color:white;
+
+    animation:fade .8s ease;
+}
+
+@keyframes fade{
+
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* =======================
+LOGO
+======================= */
+
+.logo-section{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.plane-icon{
+
+    font-size:42px;
+
+    color:#38bdf8;
+
+    margin-bottom:10px;
+
+    animation:fly 2s infinite ease-in-out;
+
+}
+
+@keyframes fly{
+
+    0%{
+        transform:translateX(-6px);
+    }
+
+    50%{
+        transform:translateX(6px);
+    }
+
+    100%{
+        transform:translateX(-6px);
+    }
+
+}
+
+.logo{
+
+    font-size:46px;
+
+    font-weight:800;
+
+    color:white;
+
+}
+
+.logo span{
+
+    color:#38bdf8;
+
+}
+
+.logo-section p{
+
+    color:#ddd;
+
+    letter-spacing:2px;
+
+    margin-top:10px;
+
+}
+
+/* =======================
+INPUTS
+======================= */
+
+.input-group{
+
+    position:relative;
+
+    margin-bottom:22px;
+
+}
+
+.input-group input{
+
+    width:100%;
+
+    height:58px;
+
+    border-radius:15px;
+
+    border:none;
+
+    outline:none;
+
+    background:rgba(255,255,255,.16);
+
+    color:white;
+
+    padding-left:50px;
+
+    padding-right:50px;
+
+    transition:.3s;
+
+}
+
+.input-group input::placeholder{
+
+    color:#ddd;
+
+}
+
+.input-group input:focus{
+
+    background:rgba(255,255,255,.24);
+
+    border:1px solid #38bdf8;
+
+}
+
+.input-icon{
+
+    position:absolute;
+
+    left:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:white;
+
+}
+
+.eye-btn{
+
+    position:absolute;
+
+    right:15px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:none;
+
+    border:none;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+}
+
+/* =======================
+FORGOT
+======================= */
+
+.forgot{
+
+    text-align:right;
+
+    margin-bottom:20px;
+
+}
+
+.forgot a{
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:14px;
+
+}
+
+.forgot a:hover{
+
+    color:#38bdf8;
+
+}
+
+/* =======================
+LOGIN
+======================= */
+
+.login-btn{
+
+    width:100%;
+
+    height:58px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:linear-gradient(90deg,#2563eb,#0ea5e9);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+}
+
+.login-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 30px rgba(37,99,235,.4);
+
+}
+
+/* =======================
+DIVIDER
+======================= */
+
+.divider{
+
+    display:flex;
+
+    align-items:center;
+
+    margin:28px 0;
+
+}
+
+.divider::before,
+.divider::after{
+
+    content:"";
+
+    flex:1;
+
+    height:1px;
+
+    background:rgba(255,255,255,.3);
+
+}
+
+.divider span{
+
+    margin:0 15px;
+
+}
+
+/* =======================
+GOOGLE
+======================= */
+.google-btn{
+
+    width:100%;
+
+    height:60px;
+
+    background:#fff;
+
+    border:none;
+
+    border-radius:15px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:#444;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.google-btn span{
+
+    color:#333;
+}
+
+.google-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 25px rgba(0,0,0,.25);
+}
+/* =======================
+REGISTER
+======================= */
+
+.register-text{
+
+    margin-top:28px;
+
+    text-align:center;
+
+    color:#ddd;
+
+}
+
+.register-text a{
+
+    color:#38bdf8;
+
+    margin-left:8px;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+.register-text a:hover{
+
+    color:white;
+
+}
+
+/* =======================
+RESPONSIVE
+======================= */
+
+@media(max-width:600px){
+
+.login-card{
+
+    width:90%;
+    padding:30px;
+
+}
+
+.logo{
+
+    font-size:38px;
+
+}
+
+}
+
+/* Remove browser password reveal icon */
+
+input::-ms-reveal,
+input::-ms-clear{
+    display:none;
+}
+
+input::-webkit-credentials-auto-fill-button{
+    visibility:hidden;
+}
+
+.error-msg{
+
+    color:#ffb4b4;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
