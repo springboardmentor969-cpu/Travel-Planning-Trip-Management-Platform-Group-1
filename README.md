@@ -1,1 +1,1 @@
-# Travel-Planning-Trip-Management-Platform-Group-1
+# TripNest
