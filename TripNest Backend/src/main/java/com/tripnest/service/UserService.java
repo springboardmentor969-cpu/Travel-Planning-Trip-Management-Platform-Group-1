@@ -6,19 +6,16 @@ import com.tripnest.dto.UserResponse;
 import com.tripnest.entity.User;
 import com.tripnest.exception.ApiException;
 import com.tripnest.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public UserResponse getProfile(Long userId) {
         User user = findUser(userId);

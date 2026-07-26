@@ -6,6 +6,7 @@ import com.tripnest.entity.TripStatus;
 import com.tripnest.security.CustomUserPrincipal;
 import com.tripnest.service.TripService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,13 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/trips")
+@RequiredArgsConstructor
 public class TripController {
 
     private final TripService tripService;
-
-    public TripController(TripService tripService) {
-        this.tripService = tripService;
-    }
 
     // GET /api/trips?status=&search=
     @GetMapping

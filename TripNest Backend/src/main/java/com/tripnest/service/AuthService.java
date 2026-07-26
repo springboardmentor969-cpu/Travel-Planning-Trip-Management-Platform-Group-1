@@ -11,6 +11,7 @@ import com.tripnest.repository.PasswordResetTokenRepository;
 import com.tripnest.repository.RefreshTokenRepository;
 import com.tripnest.repository.UserRepository;
 import com.tripnest.security.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -27,15 +29,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final EmailService emailService;
-
-    public AuthService(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository, PasswordResetTokenRepository passwordResetTokenRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, EmailService emailService) {
-        this.userRepository = userRepository;
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.passwordResetTokenRepository = passwordResetTokenRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
-        this.emailService = emailService;
-    }
 
     @Transactional
     public UserResponse register(RegisterRequest request) {

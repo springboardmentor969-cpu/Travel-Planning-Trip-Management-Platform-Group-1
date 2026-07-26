@@ -8,21 +8,18 @@ import com.tripnest.entity.User;
 import com.tripnest.exception.ApiException;
 import com.tripnest.repository.TripRepository;
 import com.tripnest.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TripService {
 
     private final TripRepository tripRepository;
     private final UserRepository userRepository;
-
-    public TripService(TripRepository tripRepository, UserRepository userRepository) {
-        this.tripRepository = tripRepository;
-        this.userRepository = userRepository;
-    }
 
     public List<TripResponse> getTrips(Long ownerId, TripStatus status, String search) {
         List<Trip> trips;

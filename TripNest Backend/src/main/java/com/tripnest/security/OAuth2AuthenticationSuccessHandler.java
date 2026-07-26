@@ -9,6 +9,7 @@ import com.tripnest.entity.RefreshToken;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -20,17 +21,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 @Component
+@RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
-
-    public OAuth2AuthenticationSuccessHandler(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.jwtUtil = jwtUtil;
-    }
 
     @Value("${app.oauth2.redirect-uri}")
     private String redirectUri;

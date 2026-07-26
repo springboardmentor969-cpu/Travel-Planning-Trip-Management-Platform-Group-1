@@ -62,145 +62,113 @@ export default function Register() {
   };
 
   return (
-    <div className="flex min-h-screen">
-      {/* Left panel — brand/visual side */}
-      <div className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-amber-500 via-orange-600 to-slate-900 p-10 text-white lg:flex">
-        <div className="absolute inset-0 opacity-25">
-          <img
-            src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80"
-            alt=""
-            className="h-full w-full object-cover"
-          />
-        </div>
-
-        <div className="relative z-10 text-2xl font-semibold tracking-tight">
-          TripNest
-        </div>
-
-        <div className="relative z-10 max-w-sm">
-          <h2 className="mb-3 text-3xl font-semibold leading-snug">
-            Every trip starts with a plan.
-          </h2>
-          <p className="text-orange-100">
-            Join travelers organizing itineraries, budgets, and group trips
-            without the spreadsheet chaos.
-          </p>
-        </div>
-
-        <div className="relative z-10 flex gap-6 text-sm text-orange-100">
-          <div>
-            <p className="text-xl font-semibold text-white">10+</p>
-            <p>Planning tools</p>
-          </div>
-          <div>
-            <p className="text-xl font-semibold text-white">100%</p>
-            <p>Free to start</p>
-          </div>
-        </div>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden py-10">
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=1920&q=80"
+          alt=""
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/85 via-orange-900/60 to-slate-900/90" />
       </div>
 
-      {/* Right panel — the form */}
-      <div className="flex w-full items-center justify-center bg-slate-50 px-4 py-10 lg:w-1/2">
-        <div className="w-full max-w-sm">
-          <div className="mb-8 lg:hidden">
-            <span className="text-xl font-semibold text-teal-700">
-              TripNest
-            </span>
+      <div className="absolute left-8 top-8 z-10 text-xl font-semibold text-white">
+        TripNest
+      </div>
+
+      <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white/95 p-8 shadow-2xl backdrop-blur">
+        <h1 className="mb-1 text-2xl font-semibold text-slate-900">
+          Create your account
+        </h1>
+        <p className="mb-6 text-sm text-slate-500">
+          Start planning trips with TripNest.
+        </p>
+
+        {submitError && (
+          <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+            {submitError}
+          </div>
+        )}
+        {successMessage && (
+          <div className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
+            {successMessage}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} noValidate>
+          <FormField
+            label="Full name"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            error={errors.name}
+            autoComplete="name"
+          />
+          <FormField
+            label="Email"
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            error={errors.email}
+            autoComplete="email"
+          />
+          <FormField
+            label="Password"
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            error={errors.password}
+            autoComplete="new-password"
+          />
+          <FormField
+            label="Confirm password"
+            type="password"
+            name="confirmPassword"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            error={errors.confirmPassword}
+            autoComplete="new-password"
+          />
+
+          <div className="mb-5">
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              I'm joining as
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {SELF_SERVICE_ROLES.map((role) => (
+                <button
+                  type="button"
+                  key={role}
+                  onClick={() => setForm((prev) => ({ ...prev, role }))}
+                  className={`rounded-lg border px-3 py-2 text-sm transition ${
+                    form.role === role
+                      ? "border-orange-500 bg-orange-50 text-orange-700"
+                      : "border-slate-300 text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  {ROLE_LABELS[role]}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <h1 className="mb-1 text-2xl font-semibold text-slate-900">
-            Create your account
-          </h1>
-          <p className="mb-6 text-sm text-slate-500">
-            Start planning trips with TripNest.
-          </p>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full rounded-lg bg-gradient-to-r from-orange-500 to-amber-600 py-2.5 text-sm font-medium text-white shadow-sm transition hover:from-orange-600 hover:to-amber-700 disabled:opacity-60"
+          >
+            {isSubmitting ? "Creating account…" : "Create account"}
+          </button>
+        </form>
 
-          {submitError && (
-            <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-              {submitError}
-            </div>
-          )}
-          {successMessage && (
-            <div className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
-              {successMessage}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} noValidate>
-            <FormField
-              label="Full name"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              error={errors.name}
-              autoComplete="name"
-            />
-            <FormField
-              label="Email"
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              error={errors.email}
-              autoComplete="email"
-            />
-            <FormField
-              label="Password"
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              error={errors.password}
-              autoComplete="new-password"
-            />
-            <FormField
-              label="Confirm password"
-              type="password"
-              name="confirmPassword"
-              value={form.confirmPassword}
-              onChange={handleChange}
-              error={errors.confirmPassword}
-              autoComplete="new-password"
-            />
-
-            <div className="mb-5">
-              <label className="mb-1 block text-sm font-medium text-slate-700">
-                I'm joining as
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {SELF_SERVICE_ROLES.map((role) => (
-                  <button
-                    type="button"
-                    key={role}
-                    onClick={() => setForm((prev) => ({ ...prev, role }))}
-                    className={`rounded-lg border px-3 py-2 text-sm transition ${
-                      form.role === role
-                        ? "border-teal-600 bg-teal-50 text-teal-700"
-                        : "border-slate-300 text-slate-600 hover:bg-slate-50"
-                    }`}
-                  >
-                    {ROLE_LABELS[role]}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full rounded-lg bg-teal-600 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-teal-700 disabled:opacity-60"
-            >
-              {isSubmitting ? "Creating account…" : "Create account"}
-            </button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-slate-500">
-            Already have an account?{" "}
-            <Link to="/login" className="font-medium text-teal-600 hover:underline">
-              Sign in
-            </Link>
-          </p>
-        </div>
+        <p className="mt-6 text-center text-sm text-slate-500">
+          Already have an account?{" "}
+          <Link to="/login" className="font-medium text-teal-600 hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );

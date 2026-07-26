@@ -5,6 +5,7 @@ import com.tripnest.dto.TripResponse;
 import com.tripnest.entity.Trip;
 import com.tripnest.entity.TripStatus;
 import com.tripnest.repository.TripRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,13 +13,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DashboardService {
 
     private final TripRepository tripRepository;
-
-    public DashboardService(TripRepository tripRepository) {
-        this.tripRepository = tripRepository;
-    }
 
     public DashboardSummaryResponse getSummary(Long userId) {
         List<Trip> upcoming = tripRepository

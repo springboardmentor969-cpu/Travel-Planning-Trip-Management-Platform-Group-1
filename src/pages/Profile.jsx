@@ -107,146 +107,150 @@ export default function Profile() {
   if (!user) return null;
 
   return (
-    <div>
-      {/* Header banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-rose-500 to-pink-700 text-white">
-        <div className="absolute inset-0 opacity-20">
-          <img
-            src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?auto=format&fit=crop&w=1600&q=80"
-            alt=""
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="relative mx-auto max-w-2xl px-4 py-10">
-          <div className="flex items-center gap-4">
-            <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-2xl font-semibold text-pink-700 shadow">
-              {user.name?.charAt(0)?.toUpperCase()}
-            </span>
-            <div>
-              <h1 className="text-2xl font-semibold">{user.name}</h1>
-              <p className="text-pink-100">
-                {ROLE_LABELS[user.role] || user.role}
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="bg-slate-50">
+      <div className="relative h-56 w-full overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?auto=format&fit=crop&w=1920&q=80"
+          alt=""
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-pink-900/40 to-rose-900/30" />
       </div>
 
-      <div className="mx-auto max-w-2xl px-4 py-8">
+      <div className="mx-auto max-w-2xl px-4">
+        {/* Floating avatar card, overlapping the hero */}
+        <div className="-mt-16 mb-8 flex items-center gap-4 rounded-2xl bg-white p-5 shadow-lg">
+          <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-rose-600 text-2xl font-semibold text-white shadow">
+            {user.name?.charAt(0)?.toUpperCase()}
+          </span>
+          <div>
+            <h1 className="text-xl font-semibold text-slate-900">
+              {user.name}
+            </h1>
+            <p className="text-sm text-slate-500">
+              {ROLE_LABELS[user.role] || user.role}
+            </p>
+          </div>
+        </div>
+
         <div className="mb-8 flex gap-3">
           <Link
             to="/profile/travel-history"
-            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="flex-1 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
           >
-            📜 Travel history
+            <span className="mb-1 block text-2xl">📜</span>
+            <span className="text-sm font-medium text-slate-700">Travel history</span>
           </Link>
           <Link
             to="/profile/favorite-destinations"
-            className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="flex-1 rounded-xl bg-white p-4 text-center shadow-sm transition hover:shadow-md"
           >
-            ⭐ Favorite destinations
+            <span className="mb-1 block text-2xl">⭐</span>
+            <span className="text-sm font-medium text-slate-700">Favorites</span>
           </Link>
         </div>
 
-        <section className="mb-8 rounded-2xl bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-base font-semibold text-slate-900">
-            Profile details
-          </h2>
-          {profileMessage && (
-            <div className="mb-4 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700">
-              {profileMessage}
-            </div>
-          )}
-          <form onSubmit={handleProfileSubmit} noValidate>
-            <FormField
-              label="Full name"
-              name="name"
-              value={profileForm.name}
-              onChange={handleProfileChange}
-              error={profileErrors.name}
-            />
-            <FormField
-              label="Email"
-              type="email"
-              name="email"
-              value={profileForm.email}
-              onChange={handleProfileChange}
-              error={profileErrors.email}
-              required={false}
-            />
-            <div className="mb-4">
-              <label
-                htmlFor="travelPreferences"
-                className="mb-1 block text-sm font-medium text-slate-700"
-              >
-                Travel preferences
-              </label>
-              <textarea
-                id="travelPreferences"
-                name="travelPreferences"
-                value={profileForm.travelPreferences}
+        <div className="pb-10">
+          <section className="mb-8 rounded-2xl bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-base font-semibold text-slate-900">
+              Profile details
+            </h2>
+            {profileMessage && (
+              <div className="mb-4 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700">
+                {profileMessage}
+              </div>
+            )}
+            <form onSubmit={handleProfileSubmit} noValidate>
+              <FormField
+                label="Full name"
+                name="name"
+                value={profileForm.name}
                 onChange={handleProfileChange}
-                rows={3}
-                placeholder="e.g. beach trips, budget travel, hiking"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-teal-500"
+                error={profileErrors.name}
               />
-            </div>
-            <button
-              type="submit"
-              disabled={isSavingProfile}
-              className="rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-700 disabled:opacity-60"
-            >
-              {isSavingProfile ? "Saving…" : "Save changes"}
-            </button>
-          </form>
-        </section>
+              <FormField
+                label="Email"
+                type="email"
+                name="email"
+                value={profileForm.email}
+                onChange={handleProfileChange}
+                error={profileErrors.email}
+                required={false}
+              />
+              <div className="mb-4">
+                <label
+                  htmlFor="travelPreferences"
+                  className="mb-1 block text-sm font-medium text-slate-700"
+                >
+                  Travel preferences
+                </label>
+                <textarea
+                  id="travelPreferences"
+                  name="travelPreferences"
+                  value={profileForm.travelPreferences}
+                  onChange={handleProfileChange}
+                  rows={3}
+                  placeholder="e.g. beach trips, budget travel, hiking"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-teal-500"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isSavingProfile}
+                className="rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:from-teal-700 hover:to-emerald-700 disabled:opacity-60"
+              >
+                {isSavingProfile ? "Saving…" : "Save changes"}
+              </button>
+            </form>
+          </section>
 
-        <section className="rounded-2xl bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-base font-semibold text-slate-900">
-            Change password
-          </h2>
-          {passwordMessage && (
-            <div className="mb-4 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700">
-              {passwordMessage}
-            </div>
-          )}
-          <form onSubmit={handlePasswordSubmit} noValidate>
-            <FormField
-              label="Current password"
-              type="password"
-              name="currentPassword"
-              value={passwordForm.currentPassword}
-              onChange={handlePasswordChange}
-              error={passwordErrors.currentPassword}
-              autoComplete="current-password"
-            />
-            <FormField
-              label="New password"
-              type="password"
-              name="newPassword"
-              value={passwordForm.newPassword}
-              onChange={handlePasswordChange}
-              error={passwordErrors.newPassword}
-              autoComplete="new-password"
-            />
-            <FormField
-              label="Confirm new password"
-              type="password"
-              name="confirmNewPassword"
-              value={passwordForm.confirmNewPassword}
-              onChange={handlePasswordChange}
-              error={passwordErrors.confirmNewPassword}
-              autoComplete="new-password"
-            />
-            <button
-              type="submit"
-              disabled={isSavingPassword}
-              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:opacity-60"
-            >
-              {isSavingPassword ? "Updating…" : "Update password"}
-            </button>
-          </form>
-        </section>
+          <section className="rounded-2xl bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-base font-semibold text-slate-900">
+              Change password
+            </h2>
+            {passwordMessage && (
+              <div className="mb-4 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700">
+                {passwordMessage}
+              </div>
+            )}
+            <form onSubmit={handlePasswordSubmit} noValidate>
+              <FormField
+                label="Current password"
+                type="password"
+                name="currentPassword"
+                value={passwordForm.currentPassword}
+                onChange={handlePasswordChange}
+                error={passwordErrors.currentPassword}
+                autoComplete="current-password"
+              />
+              <FormField
+                label="New password"
+                type="password"
+                name="newPassword"
+                value={passwordForm.newPassword}
+                onChange={handlePasswordChange}
+                error={passwordErrors.newPassword}
+                autoComplete="new-password"
+              />
+              <FormField
+                label="Confirm new password"
+                type="password"
+                name="confirmNewPassword"
+                value={passwordForm.confirmNewPassword}
+                onChange={handlePasswordChange}
+                error={passwordErrors.confirmNewPassword}
+                autoComplete="new-password"
+              />
+              <button
+                type="submit"
+                disabled={isSavingPassword}
+                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:opacity-60"
+              >
+                {isSavingPassword ? "Updating…" : "Update password"}
+              </button>
+            </form>
+          </section>
+        </div>
       </div>
     </div>
   );

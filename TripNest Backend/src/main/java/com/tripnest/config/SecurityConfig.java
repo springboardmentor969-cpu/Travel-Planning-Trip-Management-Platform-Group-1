@@ -2,6 +2,7 @@ package com.tripnest.config;
 
 import com.tripnest.security.JwtAuthFilter;
 import com.tripnest.security.OAuth2AuthenticationSuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,15 +23,11 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler;
-
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, OAuth2AuthenticationSuccessHandler oAuth2SuccessHandler) {
-        this.jwtAuthFilter = jwtAuthFilter;
-        this.oAuth2SuccessHandler = oAuth2SuccessHandler;
-    }
 
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigins;

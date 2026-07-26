@@ -4,7 +4,11 @@ import com.tripnest.entity.TripStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
+
 import java.time.LocalDate;
+
+@Data
 public class TripRequest {
 
     @NotBlank(message = "Destination is required")
@@ -23,63 +27,4 @@ public class TripRequest {
     private Integer travelerCount;
 
     private TripStatus status;
-
-    public TripRequest() {}
-
-    public TripRequest(String destination, LocalDate startDate, LocalDate endDate, Double budget, Integer travelerCount, TripStatus status) {
-        this.destination = destination;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.budget = budget;
-        this.travelerCount = travelerCount;
-        this.status = status;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Double getBudget() {
-        return budget;
-    }
-
-    public void setBudget(Double budget) {
-        this.budget = budget;
-    }
-
-    public Integer getTravelerCount() {
-        return travelerCount;
-    }
-
-    public void setTravelerCount(Integer travelerCount) {
-        this.travelerCount = travelerCount;
-    }
-
-    public TripStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TripStatus status) {
-        this.status = status;
-    }
 }

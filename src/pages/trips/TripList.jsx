@@ -38,29 +38,27 @@ export default function TripList() {
   };
 
   return (
-    <div>
-      {/* Header banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-emerald-600 to-teal-700 text-white">
-        <div className="absolute inset-0 opacity-25">
-          <img
-            src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80"
-            alt=""
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="relative mx-auto max-w-6xl px-4 py-10">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+    <div className="bg-slate-50">
+      {/* Full-bleed hero */}
+      <div className="relative h-64 w-full overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=80"
+          alt=""
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-emerald-900/40" />
+
+        <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-end px-4 pb-10">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-semibold sm:text-3xl">
-                Your trips
-              </h1>
+              <h1 className="text-3xl font-semibold text-white">Your trips</h1>
               <p className="mt-1 text-emerald-100">
                 Every adventure, planned and organized.
               </p>
             </div>
             <Link
               to="/trips/new"
-              className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-emerald-700 shadow-sm transition hover:bg-emerald-50"
+              className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-emerald-700 shadow-lg transition hover:bg-emerald-50"
             >
               + New trip
             </Link>
@@ -69,18 +67,19 @@ export default function TripList() {
       </div>
 
       <div className="mx-auto max-w-6xl px-4 py-8">
-        <div className="mb-6 flex flex-wrap gap-3">
+        {/* Floating filter bar */}
+        <div className="-mt-8 mb-8 flex flex-wrap gap-3 rounded-2xl bg-white p-3 shadow-lg">
           <input
             type="text"
             placeholder="Search by destination…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 min-w-[200px] rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+            className="flex-1 min-w-[200px] rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
           />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
+            className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-teal-500"
           >
             <option value="">All statuses</option>
             {Object.values(TRIP_STATUS).map((status) => (
@@ -98,17 +97,24 @@ export default function TripList() {
         )}
 
         {!isLoading && trips.length === 0 && (
-          <div className="flex flex-col items-center rounded-2xl border border-dashed border-slate-300 p-14 text-center">
-            <span className="mb-3 text-4xl">🏝️</span>
-            <p className="mb-3 text-sm text-slate-500">
-              No trips yet — plan your first one.
-            </p>
-            <Link
-              to="/trips/new"
-              className="rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700"
-            >
-              Create a trip
-            </Link>
+          <div className="relative overflow-hidden rounded-2xl">
+            <img
+              src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80"
+              alt=""
+              className="h-64 w-full object-cover"
+            />
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/60 px-6 text-center">
+              <span className="mb-2 text-3xl">🏝️</span>
+              <p className="mb-3 text-white">
+                No trips yet — plan your first one.
+              </p>
+              <Link
+                to="/trips/new"
+                className="rounded-lg bg-white px-5 py-2 text-sm font-medium text-emerald-700 shadow-sm hover:bg-emerald-50"
+              >
+                Create a trip
+              </Link>
+            </div>
           </div>
         )}
 
@@ -123,12 +129,7 @@ export default function TripList() {
                   title="Delete trip"
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
