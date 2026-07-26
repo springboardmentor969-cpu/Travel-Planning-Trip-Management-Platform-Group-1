@@ -1,0 +1,34 @@
+package com.tripnest.service;
+
+import com.tripnest.dto.BudgetSummaryDto;
+import com.tripnest.entity.Trip;
+import com.tripnest.repository.ExpenseRepository;
+import com.tripnest.repository.TripRepository;
+import java.math.BigDecimal;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional(readOnly = true)
+public class BudgetService {
+    private final TripRepository tripRepository;
+    private final ExpenseRepository expenseRepository;
+
+    public BudgetService(TripRepository tripRepository, ExpenseRepository expenseRepository) {
+        this.tripRepository = tripRepository;
+        this.expenseRepository = expenseRepository;
+    }
+
+    public BudgetSummaryDto getSummary(Long tripId) {
+        Trip trip = tripRepository.findById(tripId)
+                .orElseThrow(() -> new com.tripnest.exception.ResourceNotFoundException("Trip not found with id " + tripId));
+        BigDecimal totalExpenses = expenseRepository.sumAmountByTripId(tripId);
+        return new BudgetSummaryDto(
+                trip.getId(),
+                trip.getTitle(),
+                trip.getBudget(),
+                totalExpenses,
+                trip.getBudget().subtract(totalExpenses)
+        );
+    }
+}

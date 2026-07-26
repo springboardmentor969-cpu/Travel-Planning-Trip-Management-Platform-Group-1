@@ -1,0 +1,71 @@
+{
+  "info": {
+    "name": "TripNest MVP API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" },
+    { "key": "tripId", "value": "1" },
+    { "key": "userId", "value": "1" },
+    { "key": "itineraryId", "value": "1" },
+    { "key": "expenseId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Dashboard",
+      "request": { "method": "GET", "url": "{{baseUrl}}/dashboard" }
+    },
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/users",
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"Demo Traveler\",\n  \"email\": \"demo@tripnest.local\"\n}" }
+      }
+    },
+    {
+      "name": "Get User",
+      "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}" }
+    },
+    {
+      "name": "List Trips",
+      "request": { "method": "GET", "url": "{{baseUrl}}/trips" }
+    },
+    {
+      "name": "Create Trip",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/trips",
+        "body": { "mode": "raw", "raw": "{\n  \"title\": \"Tokyo Spring Week\",\n  \"destination\": \"Tokyo, Japan\",\n  \"startDate\": \"2026-04-06\",\n  \"endDate\": \"2026-04-13\",\n  \"budget\": 3200,\n  \"status\": \"PLANNED\",\n  \"userId\": 1\n}" }
+      }
+    },
+    {
+      "name": "Trip Details",
+      "request": { "method": "GET", "url": "{{baseUrl}}/trips/{{tripId}}/details" }
+    },
+    {
+      "name": "Add Itinerary Day",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/trips/{{tripId}}/itinerary",
+        "body": { "mode": "raw", "raw": "{\n  \"dayNumber\": 1,\n  \"title\": \"Arrive and settle in\",\n  \"description\": \"Check in and explore nearby cafes.\"\n}" }
+      }
+    },
+    {
+      "name": "Add Expense",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/trips/{{tripId}}/expenses",
+        "body": { "mode": "raw", "raw": "{\n  \"category\": \"Flights\",\n  \"amount\": 980,\n  \"description\": \"Round-trip airfare\",\n  \"expenseDate\": \"2026-01-15\"\n}" }
+      }
+    },
+    {
+      "name": "Budget Summary",
+      "request": { "method": "GET", "url": "{{baseUrl}}/trips/{{tripId}}/budget" }
+    }
+  ]
+}
