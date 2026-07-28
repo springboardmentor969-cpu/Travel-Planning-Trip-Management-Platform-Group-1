@@ -1,4 +1,4 @@
-import { CalendarPlus, Edit, Plus, ReceiptText, Trash2 } from 'lucide-react';
+import { CalendarPlus, Clock3, Edit, Plus, ReceiptText, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getErrorMessage } from '../api/client';
@@ -9,6 +9,19 @@ import FormInput from '../components/FormInput';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Modal from '../components/Modal';
 import { currency, dateLabel } from '../utils';
+
+const activityTypes = [
+  { value: 'SIGHTSEEING', label: 'Sightseeing' },
+  { value: 'TRANSPORTATION', label: 'Transportation' },
+  { value: 'ACCOMMODATION', label: 'Accommodation' },
+  { value: 'DINING', label: 'Dining' },
+  { value: 'ADVENTURE', label: 'Adventure' },
+  { value: 'SHOPPING', label: 'Shopping' },
+  { value: 'OTHER', label: 'Other' }
+];
+
+const formatActivityType = (value) => activityTypes.find((option) => option.value === value)?.label || value || 'Sightseeing';
+const formatActivityTime = (value) => (value ? value.slice(0, 5) : '09:00');
 
 export default function TripDetails() {
   const { id } = useParams();
@@ -29,7 +42,9 @@ export default function TripDetails() {
     const payload = {
       dayNumber: Number(form.get('dayNumber')),
       title: form.get('title'),
-      description: form.get('description')
+      description: form.get('description'),
+      activityType: form.get('activityType'),
+      activityTime: form.get('activityTime')
     };
     if (editing?.id) await itineraryApi.update(id, editing.id, payload);
     else await itineraryApi.create(id, payload);
@@ -80,6 +95,13 @@ export default function TripDetails() {
                   <p className="text-xs font-semibold uppercase text-blue-600">Day {item.dayNumber}</p>
                   <h3 className="mt-1 font-semibold">{item.title}</h3>
                   <p className="mt-1 text-sm text-slate-500">{item.description}</p>
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                    <span className="rounded-full bg-blue-50 px-2.5 py-1 font-medium text-blue-700">{formatActivityType(item.activityType)}</span>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-600">
+                      <Clock3 className="h-3.5 w-3.5" />
+                      {formatActivityTime(item.activityTime)}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex gap-1">
                   <button className="rounded-lg p-2 hover:bg-slate-100" onClick={() => { setEditing(item); setModalOpen(true); }}><Edit className="h-4 w-4" /></button>
@@ -106,6 +128,19 @@ export default function TripDetails() {
         <form onSubmit={saveItinerary} className="space-y-4">
           <FormInput label="Day number" name="dayNumber" type="number" min="1" defaultValue={editing?.dayNumber || 1} required />
           <FormInput label="Title" name="title" defaultValue={editing?.title || ''} required />
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-slate-700">Activity type</span>
+            <select
+              name="activityType"
+              defaultValue={editing?.activityType || 'SIGHTSEEING'}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+            >
+              {activityTypes.map((option) => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+          <FormInput label="Activity time" name="activityTime" type="time" defaultValue={formatActivityTime(editing?.activityTime)} required />
           <FormInput label="Description" name="description" as="textarea" rows="4" defaultValue={editing?.description || ''} />
           <Button type="submit"><CalendarPlus className="h-4 w-4" />Save itinerary</Button>
         </form>

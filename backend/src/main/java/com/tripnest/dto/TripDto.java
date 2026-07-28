@@ -16,7 +16,7 @@ public record TripDto(
         @NotNull LocalDate endDate,
         @NotNull @DecimalMin(value = "0.0", inclusive = true) BigDecimal budget,
         @NotNull TripStatus status,
-        @NotNull Long userId,
+        Long userId,
         String userName
 ) {
 }

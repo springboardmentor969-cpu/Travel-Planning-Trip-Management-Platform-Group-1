@@ -55,8 +55,8 @@ export default function Expenses() {
       header: 'Actions',
       render: (expense) => (
         <div className="flex gap-2">
-          <button className="rounded-lg p-2 hover:bg-slate-100" onClick={() => { setEditing(expense); setModalOpen(true); }}><Edit className="h-4 w-4" /></button>
-          <button className="rounded-lg p-2 text-red-600 hover:bg-red-50" onClick={() => remove(expense.id)}><Trash2 className="h-4 w-4" /></button>
+          <button className="rounded-full border border-slate-200 p-2.5 transition hover:bg-slate-50" onClick={() => { setEditing(expense); setModalOpen(true); }}><Edit className="h-4 w-4" /></button>
+          <button className="rounded-full border border-red-100 p-2.5 text-red-600 transition hover:bg-red-50" onClick={() => remove(expense.id)}><Trash2 className="h-4 w-4" /></button>
         </div>
       )
     }
@@ -64,16 +64,25 @@ export default function Expenses() {
 
   return (
     <div className="space-y-6">
+      <div className="overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-900 p-6 text-white shadow-soft md:p-8">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-indigo-100 backdrop-blur">
+          Expense tracker
+        </div>
+        <h1 className="mt-4 text-3xl font-bold md:text-5xl">Track trip spending with confidence.</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 md:text-base">Record travel costs, review categories, and keep the budget picture accurate.</p>
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-950">Expenses</h1>
-          <p className="mt-1 text-sm text-slate-500">Track trip spending by category and date.</p>
+          <p className="text-sm uppercase tracking-[0.18em] text-blue-600">Expense log</p>
+          <p className="mt-1 text-sm text-slate-500">A running list of trip spend entries by date and category.</p>
         </div>
         <Button onClick={() => { setEditing(null); setModalOpen(true); }}><Plus className="h-4 w-4" />Add expense</Button>
       </div>
+
       {error && <Card><p className="text-sm text-red-600">{error}</p></Card>}
-      {!expenses ? <LoadingSpinner label="Loading expenses" /> : <Table columns={columns} rows={expenses} emptyMessage="No expenses yet" />}
-      <Link to={`/trips/${id}/budget`} className="inline-block text-sm font-medium text-blue-700">View budget summary</Link>
+      {!expenses ? <LoadingSpinner label="Loading expenses" /> : <Card className="overflow-hidden p-0"><Table columns={columns} rows={expenses} emptyMessage="No expenses yet" /></Card>}
+      <Link to={`/trips/${id}/budget`} className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-800">View budget summary</Link>
       <Modal open={modalOpen} title={editing ? 'Edit expense' : 'Add expense'} onClose={() => setModalOpen(false)}>
         <form onSubmit={save} className="space-y-4">
           <FormInput label="Category" name="category" defaultValue={editing?.category || ''} required />

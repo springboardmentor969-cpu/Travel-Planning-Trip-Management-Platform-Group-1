@@ -40,7 +40,7 @@ public class TripService {
 
     public TripDto create(TripDto dto) {
         validateDates(dto);
-        User user = userService.findEntity(dto.userId());
+        User user = userService.getCurrentUser();
         Trip trip = new Trip();
         TripMapper.updateEntity(trip, dto);
         trip.setUser(user);
@@ -49,20 +49,18 @@ public class TripService {
 
     @Transactional(readOnly = true)
     public List<TripDto> list(Long userId) {
-        List<Trip> trips = userId == null
-                ? tripRepository.findAll()
-                : tripRepository.findByUserIdOrderByStartDateAsc(userId);
+        List<Trip> trips = tripRepository.findByUserIdOrderByStartDateAsc(userService.getCurrentUser().getId());
         return trips.stream().map(TripMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
     public TripDto get(Long id) {
-        return TripMapper.toDto(findEntity(id));
+        return TripMapper.toDto(findOwnedEntity(id));
     }
 
     @Transactional(readOnly = true)
     public TripDetailsDto getDetails(Long id) {
-        Trip trip = findEntity(id);
+        Trip trip = findOwnedEntity(id);
         return new TripDetailsDto(
                 TripMapper.toDto(trip),
                 itineraryRepository.findByTripIdOrderByDayNumberAscIdAsc(id).stream().map(ItineraryMapper::toDto).toList(),
@@ -73,22 +71,27 @@ public class TripService {
 
     public TripDto update(Long id, TripDto dto) {
         validateDates(dto);
-        Trip trip = findEntity(id);
+        Trip trip = findOwnedEntity(id);
         TripMapper.updateEntity(trip, dto);
-        if (!trip.getUser().getId().equals(dto.userId())) {
-            trip.setUser(userService.findEntity(dto.userId()));
-        }
         return TripMapper.toDto(tripRepository.save(trip));
     }
 
     public void delete(Long id) {
-        Trip trip = findEntity(id);
+        Trip trip = findOwnedEntity(id);
         tripRepository.delete(trip);
     }
 
     public Trip findEntity(Long id) {
         return tripRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Trip not found with id " + id));
+    }
+
+    public Trip findOwnedEntity(Long id) {
+        Trip trip = findEntity(id);
+        if (!trip.getUser().getId().equals(userService.getCurrentUser().getId())) {
+            throw new ResourceNotFoundException("Trip not found with id " + id);
+        }
+        return trip;
     }
 
     private void validateDates(TripDto dto) {

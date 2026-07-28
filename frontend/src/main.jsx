@@ -8,10 +8,12 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Budget from './pages/Budget.jsx';
 import CreateTrip from './pages/CreateTrip.jsx';
+import Destinations from './pages/Destinations.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import EditTrip from './pages/EditTrip.jsx';
 import Expenses from './pages/Expenses.jsx';
 import NotFound from './pages/NotFound.jsx';
+import Profile from './pages/Profile.jsx';
 import TripDetails from './pages/TripDetails.jsx';
 import Trips from './pages/Trips.jsx';
 import './index.css';
@@ -33,6 +35,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/" element={<Dashboard />} />
             <Route path="/trips" element={<Trips />} />
             <Route path="/trips/new" element={<CreateTrip />} />
+            <Route path="/destinations" element={<Destinations />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/trips/:id" element={<TripDetails />} />
             <Route path="/trips/:id/edit" element={<EditTrip />} />
             <Route path="/trips/:id/budget" element={<Budget />} />

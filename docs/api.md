@@ -60,7 +60,9 @@ Itinerary payload:
 {
   "dayNumber": 1,
   "title": "Arrive and settle in",
-  "description": "Check in and explore nearby cafes."
+  "description": "Check in and explore nearby cafes.",
+  "activityType": "SIGHTSEEING",
+  "activityTime": "09:00:00"
 }
 ```
 

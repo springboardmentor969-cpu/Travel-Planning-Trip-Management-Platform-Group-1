@@ -13,15 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class BudgetService {
     private final TripRepository tripRepository;
     private final ExpenseRepository expenseRepository;
+    private final UserService userService;
 
-    public BudgetService(TripRepository tripRepository, ExpenseRepository expenseRepository) {
+    public BudgetService(TripRepository tripRepository, ExpenseRepository expenseRepository, UserService userService) {
         this.tripRepository = tripRepository;
         this.expenseRepository = expenseRepository;
+        this.userService = userService;
     }
 
     public BudgetSummaryDto getSummary(Long tripId) {
         Trip trip = tripRepository.findById(tripId)
                 .orElseThrow(() -> new com.tripnest.exception.ResourceNotFoundException("Trip not found with id " + tripId));
+        if (!trip.getUser().getId().equals(userService.getCurrentUser().getId())) {
+            throw new com.tripnest.exception.ResourceNotFoundException("Trip not found with id " + tripId);
+        }
         BigDecimal totalExpenses = expenseRepository.sumAmountByTripId(tripId);
         return new BudgetSummaryDto(
                 trip.getId(),

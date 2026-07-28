@@ -25,7 +25,35 @@ TripNest is a full-stack travel planning and trip management MVP built with a mo
 Before running the application, make sure you have the following installed:
 - **Java Development Kit (JDK)**: Version 21 or higher
 - **Node.js**: Version 18 or higher (with `npm`)
-- **MySQL / MariaDB**: Or use the pre-packaged portable MariaDB included in this project workspace under `.tools/`.
+- **MySQL 8+ / MariaDB 10.6+**: Or use the pre-packaged portable MariaDB included in this project workspace under `.tools/`.
+
+---
+
+## 🗄️ MySQL Setup
+
+TripNest is already configured to use MySQL by default in [backend/src/main/resources/application.properties](backend/src/main/resources/application.properties). The backend connects with these defaults unless you override them with environment variables:
+
+- `DB_URL=jdbc:mysql://localhost:3306/tripnest?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC`
+- `DB_USERNAME=root`
+- `DB_PASSWORD=password`
+
+### Option A: Local MySQL
+
+1. Install MySQL Server 8.x.
+2. Start the MySQL service.
+3. Create a database user if you do not want to use `root`.
+4. Optionally create the database yourself, although the backend can create it automatically because of `createDatabaseIfNotExist=true`.
+5. Update the environment variables above if your MySQL username or password is different.
+
+Example SQL if you want to create the database manually:
+
+```sql
+CREATE DATABASE tripnest;
+```
+
+### Option B: Portable MariaDB Included in Repo
+
+If you are on Windows and want the bundled database, start the portable MariaDB from `.tools/` instead of installing MySQL separately.
 
 ---
 
@@ -50,6 +78,15 @@ Verify that the database is running and accepting connections:
 
 > [!NOTE]
 > Database tables and constraints are managed by Hibernate. On application startup, the backend automatically generates tables via `ddl-auto=update` and runs a setup initializer to insert user/admin roles.
+
+> [!TIP]
+> If you are using your own MySQL installation instead of the bundled MariaDB, set `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD` before starting the backend. For example in PowerShell:
+>
+> ```powershell
+> $env:DB_URL="jdbc:mysql://localhost:3306/tripnest?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+> $env:DB_USERNAME="root"
+> $env:DB_PASSWORD="your-password"
+> ```
 
 ---
 

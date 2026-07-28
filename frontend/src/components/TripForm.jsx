@@ -1,7 +1,7 @@
 import { Save } from 'lucide-react';
 import Button from './Button';
 import FormInput from './FormInput';
-import { defaultUserId } from '../utils';
+import { useAuth } from '../contexts/AuthContext';
 
 const emptyTrip = {
   title: '',
@@ -10,11 +10,11 @@ const emptyTrip = {
   endDate: '',
   budget: '',
   status: 'PLANNED',
-  userId: defaultUserId
 };
 
 export default function TripForm({ initialValue, onSubmit, saving }) {
   const trip = { ...emptyTrip, ...initialValue };
+  const { user } = useAuth();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,8 +25,9 @@ export default function TripForm({ initialValue, onSubmit, saving }) {
       startDate: formData.get('startDate'),
       endDate: formData.get('endDate'),
       budget: Number(formData.get('budget')),
-      status: formData.get('status'),
-      userId: Number(formData.get('userId'))
+      status: String(formData.get('status')).toUpperCase(),
+      // Kept for compatibility with existing backend deployments; the API ignores it for ownership.
+      userId: trip.userId || user?.id,
     });
   };
 
@@ -37,7 +38,6 @@ export default function TripForm({ initialValue, onSubmit, saving }) {
       <FormInput label="Start date" name="startDate" type="date" defaultValue={trip.startDate} required />
       <FormInput label="End date" name="endDate" type="date" defaultValue={trip.endDate} required />
       <FormInput label="Budget" name="budget" type="number" step="0.01" min="0" defaultValue={trip.budget} required />
-      <FormInput label="User ID" name="userId" type="number" min="1" defaultValue={trip.userId} required />
       <label className="block md:col-span-2">
         <span className="mb-1 block text-sm font-medium text-slate-700">Status</span>
         <select

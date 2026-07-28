@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -71,6 +72,15 @@ public class GlobalExceptionHandler {
             errors.put(violation.getPropertyPath().toString(), violation.getMessage())
         );
         return build(HttpStatus.BAD_REQUEST, "Validation failed", errors);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleUnreadableRequest(HttpMessageNotReadableException ex) {
+        String message = ex.getMostSpecificCause().getMessage();
+        if (message != null && message.contains("Status must be")) {
+            return build(HttpStatus.BAD_REQUEST, "Status must be Planned, Active, Completed, or Cancelled", null);
+        }
+        return build(HttpStatus.BAD_REQUEST, "Request contains an invalid value", null);
     }
 
     @ExceptionHandler(Exception.class)

@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS itineraries (
     day_number INT NOT NULL,
     title VARCHAR(140) NOT NULL,
     description VARCHAR(1000),
+    activity_type VARCHAR(32),
+    activity_time TIME,
     trip_id BIGINT NOT NULL,
     CONSTRAINT fk_itineraries_trip FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE
 );

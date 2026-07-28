@@ -16,14 +16,16 @@ ON DUPLICATE KEY UPDATE
     status = VALUES(status),
     user_id = VALUES(user_id);
 
-INSERT INTO itineraries (id, day_number, title, description, trip_id) VALUES
-    (1, 1, 'Arrive and settle in', 'Check in, explore the neighborhood, and keep dinner flexible.', 1),
-    (2, 2, 'Museums and gardens', 'Visit Ueno Park, Tokyo National Museum, and an evening izakaya.', 1),
-    (3, 1, 'Alfama walk', 'Arrive, check in, and walk through Alfama before dinner.', 2)
+INSERT INTO itineraries (id, day_number, title, description, activity_type, activity_time, trip_id) VALUES
+    (1, 1, 'Arrive and settle in', 'Check in, explore the neighborhood, and keep dinner flexible.', 'ACCOMMODATION', '09:00:00', 1),
+    (2, 2, 'Museums and gardens', 'Visit Ueno Park, Tokyo National Museum, and an evening izakaya.', 'SIGHTSEEING', '10:00:00', 1),
+    (3, 1, 'Alfama walk', 'Arrive, check in, and walk through Alfama before dinner.', 'SIGHTSEEING', '16:00:00', 2)
 ON DUPLICATE KEY UPDATE
     day_number = VALUES(day_number),
     title = VALUES(title),
     description = VALUES(description),
+    activity_type = VALUES(activity_type),
+    activity_time = VALUES(activity_time),
     trip_id = VALUES(trip_id);
 
 INSERT INTO expenses (id, category, amount, description, expense_date, trip_id) VALUES

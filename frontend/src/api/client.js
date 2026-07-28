@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+  // In development Vite forwards this path to Spring Boot, avoiding browser CORS issues.
+  // Set VITE_API_URL in production when the API is hosted separately.
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -28,11 +30,19 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      const currentPath = window.location.pathname;
+      if (currentPath !== '/login' && currentPath !== '/register') {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
 );
 
-export const getErrorMessage = (error) =>
-  error?.response?.data?.message || error?.message || 'Something went wrong';
+export const getErrorMessage = (error) => {
+  const data = error?.response?.data;
+  const fieldErrors = data?.errors && Object.entries(data.errors)
+    .map(([field, message]) => `${field}: ${message}`)
+    .join(', ');
+  return fieldErrors || data?.message || error?.message || 'Something went wrong';
+};

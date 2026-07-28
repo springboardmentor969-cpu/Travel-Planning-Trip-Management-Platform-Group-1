@@ -14,20 +14,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class DashboardService {
     private final TripRepository tripRepository;
     private final ExpenseRepository expenseRepository;
+    private final UserService userService;
 
-    public DashboardService(TripRepository tripRepository, ExpenseRepository expenseRepository) {
+    public DashboardService(TripRepository tripRepository, ExpenseRepository expenseRepository, UserService userService) {
         this.tripRepository = tripRepository;
         this.expenseRepository = expenseRepository;
+        this.userService = userService;
     }
 
     public DashboardDto getDashboard() {
-        BigDecimal totalBudget = tripRepository.findAll().stream()
+        Long userId = userService.getCurrentUser().getId();
+        BigDecimal totalBudget = tripRepository.findByUserIdOrderByStartDateAsc(userId).stream()
                 .map(trip -> trip.getBudget() == null ? BigDecimal.ZERO : trip.getBudget())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalExpenses = expenseRepository.sumAllAmounts();
+        BigDecimal totalExpenses = expenseRepository.sumByTripUserId(userId);
+        if (totalExpenses == null) totalExpenses = BigDecimal.ZERO;
         return new DashboardDto(
-                tripRepository.count(),
-                tripRepository.findTop5ByStartDateGreaterThanEqualOrderByStartDateAsc(LocalDate.now()).stream()
+                tripRepository.countByUserId(userId),
+                tripRepository.findTop5ByUserIdAndStartDateGreaterThanEqualOrderByStartDateAsc(userId, LocalDate.now()).stream()
                         .map(TripMapper::toDto)
                         .toList(),
                 totalExpenses,

@@ -1,7 +1,9 @@
 package com.tripnest.mapper;
 
+import com.tripnest.entity.ActivityType;
 import com.tripnest.dto.ItineraryDto;
 import com.tripnest.entity.Itinerary;
+import java.time.LocalTime;
 
 public final class ItineraryMapper {
     private ItineraryMapper() {
@@ -13,6 +15,8 @@ public final class ItineraryMapper {
                 itinerary.getDayNumber(),
                 itinerary.getTitle(),
                 itinerary.getDescription(),
+                itinerary.getActivityType(),
+                itinerary.getActivityTime(),
                 itinerary.getTrip().getId()
         );
     }
@@ -21,5 +25,7 @@ public final class ItineraryMapper {
         itinerary.setDayNumber(dto.dayNumber());
         itinerary.setTitle(dto.title());
         itinerary.setDescription(dto.description());
+        itinerary.setActivityType(dto.activityType() == null ? ActivityType.SIGHTSEEING : dto.activityType());
+        itinerary.setActivityTime(dto.activityTime() == null ? LocalTime.of(9, 0) : dto.activityTime());
     }
 }

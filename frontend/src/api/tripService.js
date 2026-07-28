@@ -4,6 +4,11 @@ export const dashboardApi = {
   get: () => api.get('/dashboard').then((res) => res.data)
 };
 
+export const destinationApi = {
+  list: (params = {}) => api.get('/destinations', { params }).then((res) => res.data),
+  get: (id) => api.get(`/destinations/${id}`).then((res) => res.data)
+};
+
 export const userApi = {
   create: (payload) => api.post('/users', payload).then((res) => res.data),
   get: (id) => api.get(`/users/${id}`).then((res) => res.data),

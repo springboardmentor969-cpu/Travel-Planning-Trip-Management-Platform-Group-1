@@ -26,6 +26,11 @@ function authReducer(state, action) {
       return { ...state, loading: false, error: action.payload };
     case 'AUTH_LOGOUT':
       return { ...state, isAuthenticated: false, user: null, error: null };
+    case 'AUTH_UPDATE_USER':
+      return {
+        ...state,
+        user: action.payload
+      };
     default:
       return state;
   }
@@ -81,11 +86,17 @@ export function AuthProvider({ children }) {
     dispatch({ type: 'AUTH_LOGOUT' });
   }, []);
 
+  const updateUser = useCallback((nextUser) => {
+    localStorage.setItem('user', JSON.stringify(nextUser));
+    dispatch({ type: 'AUTH_UPDATE_USER', payload: nextUser });
+  }, []);
+
   const value = {
     ...state,
     login,
     register,
-    logout
+    logout,
+    updateUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

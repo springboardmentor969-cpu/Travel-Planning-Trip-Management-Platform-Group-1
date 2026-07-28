@@ -8,6 +8,7 @@ import com.tripnest.exception.ResourceNotFoundException;
 import com.tripnest.mapper.UserMapper;
 import com.tripnest.repository.RoleRepository;
 import com.tripnest.repository.UserRepository;
+import com.tripnest.security.SecurityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,5 +64,15 @@ public class UserService {
     public User findEntity(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
+    }
+
+    @Transactional(readOnly = true)
+    public User getCurrentUser() {
+        String email = SecurityUtils.getCurrentUserEmail();
+        if (email == null) {
+            throw new ResourceNotFoundException("Authenticated user was not found");
+        }
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }
