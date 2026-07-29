@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TripNest ✈️
 
 TripNest is a full-stack travel planning and trip management MVP built with a modern backend and responsive frontend. It enables travelers to create trips, plan daily itineraries, track expenses, and view dynamic budget analysis through a comprehensive dashboard.
@@ -138,3 +139,6 @@ If you encounter errors saying address is already in use:
 ### Custom Configurations
 - **Database Connection**: Update `backend/src/main/resources/application.properties` (set `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`).
 - **Frontend API Endpoint**: Alter the `VITE_API_URL` environment variable or edit `frontend/src/api/client.js` (defaults to `http://localhost:8080/api`).
+=======
+# Travel-Planning-Trip-Management-Platform-Group-1
+>>>>>>> 43d7897aa40c635d8f3b47865a525e76cf49b6ce
