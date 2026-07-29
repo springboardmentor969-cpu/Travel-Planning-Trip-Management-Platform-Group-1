@@ -4,12 +4,12 @@ import Sidebar from '../components/Sidebar';
 
 export default function AppLayout() {
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-[#050A18] via-[#0B1229] to-[#050A18] text-white font-sans">
       <Navbar />
-      <div className="flex-1 max-w-7xl w-full mx-auto grid lg:grid-cols-[250px_1fr]">
+      <div className="flex-1 max-w-[1400px] w-full mx-auto grid lg:grid-cols-[260px_1fr]">
         <Sidebar />
-        <main className="p-6 lg:p-10 overflow-hidden">
-          <div className="animate-fade-in duration-200">
+        <main className="p-6 lg:p-10 overflow-y-auto">
+          <div className="animate-fade-in duration-300">
             <Outlet />
           </div>
         </main>

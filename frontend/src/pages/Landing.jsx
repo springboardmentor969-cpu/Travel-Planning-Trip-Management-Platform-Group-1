@@ -33,9 +33,9 @@ export default function Landing() {
   };
 
   const destinations = [
-    { name: 'Goa', image: goaImg, desc: 'Sun-kissed beaches & vibrant nightlife', budget: '$500+' },
-    { name: 'Manali', image: manaliImg, desc: 'Snow-capped peaks & scenic valley escapes', budget: '$700+' },
-    { name: 'Kerala', image: keralaImg, desc: 'Serene backwaters & lush nature trails', budget: '$600+' }
+    { name: 'Goa', image: goaImg, desc: 'Sun-kissed beaches & vibrant nightlife', budget: '₹30,000+' },
+    { name: 'Manali', image: manaliImg, desc: 'Snow-capped peaks & scenic valley escapes', budget: '₹40,000+' },
+    { name: 'Kerala', image: keralaImg, desc: 'Serene backwaters & lush nature trails', budget: '₹25,000' }
   ];
 
   return (

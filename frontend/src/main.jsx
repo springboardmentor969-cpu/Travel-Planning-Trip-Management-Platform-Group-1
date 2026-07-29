@@ -16,6 +16,7 @@ import NotFound from './pages/NotFound.jsx';
 import TripDetails from './pages/TripDetails.jsx';
 import Trips from './pages/Trips.jsx';
 import './index.css';
+import Destinations from './pages/Destinations.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/destinations" element={<Destinations />} />
             <Route path="/trips" element={<Trips />} />
             <Route path="/trips/new" element={<CreateTrip />} />
             <Route path="/trips/:id" element={<TripDetails />} />

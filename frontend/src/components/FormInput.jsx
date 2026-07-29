@@ -1,17 +1,17 @@
-export default function FormInput({ label, as = 'input', className = '', error, ...props }) {
-  const Element = as;
+import React from 'react';
+
+const baseClass = "w-full bg-white/5 border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-amber-500/50 [color-scheme:dark]";
+const labelClass = "block text-xs font-semibold text-white/80 mb-1";
+
+export default function FormInput({ label, as = 'input', error, className = '',...props }) {
+  const Component = as;
   return (
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-slate-700">{label}</label>
-      <Element
-        className={`w-full rounded-lg border bg-white px-3 py-2 text-sm outline-none transition focus:ring-4 ${
-          error
-            ? 'border-red-300 focus:border-red-500 focus:ring-red-500/10'
-            : 'border-slate-200 focus:border-indigo-500 focus:ring-indigo-500/10'
-        } ${className}`}
-        {...props}
-      />
-      {error && <p className="text-xs text-red-600 font-medium">{error}</p>}
+    <div>
+      {label && <label className={labelClass}>{label}</label>}
+      <Component {...props} className={`${baseClass} ${as === 'textarea'? 'min-h-[50px] resize-none' : ''} ${className}`} >
+        {props.children}
+      </Component>
+      {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
     </div>
-  );
+  )
 }

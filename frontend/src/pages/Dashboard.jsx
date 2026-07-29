@@ -1,9 +1,8 @@
-import { CalendarDays, PiggyBank, Plane, WalletCards, ArrowRight, Compass } from 'lucide-react';
+import { CalendarDays, PiggyBank, Plane, Wallet, ArrowRight, PlusCircle, Gem, MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getErrorMessage } from '../api/client';
 import { dashboardApi } from '../api/tripService';
-import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { currency, dateLabel } from '../utils';
 import { useAuth } from '../contexts/AuthContext';
@@ -17,120 +16,96 @@ export default function Dashboard() {
     dashboardApi.get().then(setData).catch((err) => setError(getErrorMessage(err)));
   }, []);
 
-  if (error) {
-    return (
-      <div className="rounded-2xl border-red-100 bg-red-50 p-5 shadow-soft">
-        <p className="text-sm font-semibold text-red-600">{error}</p>
-      </div>
-    );
-  }
-  
+  if (error) return <div className="rounded-2xl bg-red-500/10 p-5 border border-red-500/20"><p className="text-red-400">{error}</p></div>
   if (!data) return <LoadingSpinner label="Loading dashboard" />;
 
   const stats = [
-    { label: 'Total Trips', value: data.numberOfTrips, icon: Plane, color: 'from-blue-500 to-indigo-500', iconColor: 'text-blue-600', bgColor: 'bg-blue-50/50' },
-    { label: 'Upcoming Trips', value: data.upcomingTrips.length, icon: CalendarDays, color: 'from-amber-500 to-orange-500', iconColor: 'text-amber-600', bgColor: 'bg-amber-50/50' },
-    { label: 'Total Expenses', value: new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(data.totalExpenses || 0), icon: WalletCards, color: 'from-violet-500'},
-    { label: 'Remaining Budget', value: new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(data.budgetRemaining || 0), icon: PiggyBank, color: 'from-emerald-500'}
+    { label: 'TOTAL TRIPS', value: data.numberOfTrips, icon: Plane },
+    { label: 'UPCOMING TRIPS', value: data.upcomingTrips.length, icon: CalendarDays },
+    { label: 'TOTAL EXPENSES', value: currency(data.totalExpenses || 0), icon: Wallet },
+    { label: 'REMAINING BUDGET', value: currency(data.budgetRemaining || 0), icon: PiggyBank }
   ];
 
   return (
     <div className="space-y-8">
-      {/* Greeting Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
-            Welcome back, <span className="bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">{user?.name || 'Traveler'}</span>!
+          <h1 className="font-heading text-4xl font-bold text-white">
+            Welcome back, <span className="bg-gradient-to-r from-amber-400 to-teal-400 bg-clip-text text-transparent">{user?.name}</span>
           </h1>
-          <p className="mt-2 text-sm text-slate-500 font-light">Here is an overview of your current budget targets and upcoming plans.</p>
+          <p className="mt-2 text-white/60">Track your adventures and budget in one place.</p>
         </div>
-        <Link
-          to="/trips/new"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-4.5 py-2.5 text-sm transition shadow-lg shadow-indigo-650/15"
-        >
-          <Compass className="h-4 w-4" /> Plan a New Trip
+        <Link to="/trips/new" className="bg-gradient-to-r from-amber-500 to-teal-500 text-[#050A18] font-bold px-6 py-3.5 rounded-2xl shadow-2xl shadow-amber-500/30 hover:scale-105 hover:shadow-amber-500/50 transition-all duration-300 flex items-center gap-2">
+          <PlusCircle className="h-5 w-5" /> Plan a New Trip
         </Link>
       </div>
 
-      {/* Stats Widgets */}
+      {/* Stats */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map(({ label, value, icon: Icon, color, iconColor, bgColor }) => (
-          <div
-            key={label}
-            className="group relative overflow-hidden rounded-2xl border-slate-200/60 bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:shadow-md"
-          >
-            <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${color}`} />
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{label}</span>
-              <span className={`grid h-8 w-8 place-items-center rounded-lg ${bgColor} ${iconColor}`}>
-                <Icon className="h-4.5 w-4.5" />
+        {stats.map(({ label, value, icon: Icon }) => (
+          <div key={label} className="rounded-3xl bg-white/5 backdrop-blur-xl border-white/10 p-5 lg:p-7 overflow-hidden hover:border-amber-400/40 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 group min-w-0">
+      
+            {/* Top Row */}
+            <div className="flex items-center justify-between mb-4 gap-3">
+              <span className="text-[10px] lg:text-xs font-bold text-white/50 uppercase tracking-wider truncate">
+                {label}
               </span>
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-teal-500 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-110 transition flex-shrink-0">
+                <Icon className="h-5 w-5 lg:h-6 lg:w-6 text-[#050A18]" />
+              </div>
             </div>
-            <p className="mt-4 text-3xl font-bold tracking-tight text-slate-900">{value}</p>
+
+            {/* Value */}
+            <p className="font-sans text-2xl lg:text-4xl font-bold text-white truncate tabular-nums">
+              {value}
+            </p>
           </div>
         ))}
       </div>
+      
 
-      {/* Main Panel grid */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <Card className="h-full flex flex-col">
-            <h2 className="text-lg font-bold tracking-tight text-slate-900 border-b border-slate-100 pb-4 mb-4">Upcoming Trips</h2>
-            <div className="flex-1 divide-y divide-slate-100">
-              {data.upcomingTrips.length === 0? (
-                <div className="flex flex-col items-center justify-center py-12 text-center h-full">
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-slate-50 text-slate-400 mb-4 border-slate-100">
-                    <Plane className="h-5 w-5" />
-                  </span>
-                  <p className="text-sm text-slate-500 font-medium">No upcoming trips created yet</p>
-                  <p className="text-xs text-slate-400 mt-1 max-w-xs font-light">Create a trip and outline your dates to see it listed here.</p>
-                </div>
-              ) : (
-                data.upcomingTrips.map((trip) => (
-                  <Link
-                    key={trip.id}
-                    to={`/trips/${trip.id}`}
-                    className="flex items-center justify-between py-4 group hover:bg-slate-50/50 px-2 rounded-xl transition duration-150"
-                  >
-                    <div className="space-y-1">
-                      <span className="font-semibold text-slate-900 group-hover:text-indigo-600 transition">{trip.title}</span>
-                      <div className="flex items-center gap-2 text-xs text-slate-400">
-                        <span className="font-medium">{trip.destination}</span>
-                        <span>•</span>
-                        <span>{dateLabel(trip.startDate)}</span>
-                      </div>
-                    </div>
-                    <span className="rounded-full bg-slate-50 group-hover:bg-indigo-50 p-2 text-slate-400 group-hover:text-indigo-650 transition">
-                      <ArrowRight className="h-4 w-4" />
-                    </span>
-                  </Link>
-                ))
-              )}
+      {/* Content Grid */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Upcoming Trips Card */}
+        <div className="lg:col-span-2 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <Gem className="h-6 w-6 text-amber-400" />
+            <h2 className="font-heading text-2xl font-bold text-white">Upcoming Trips</h2>
+          </div>
+          {data.upcomingTrips.length === 0? (
+            <div className="text-center py-20">
+              <div className="w-24 h-24 mx-auto rounded-3xl bg-gradient-to-br from-amber-500/20 to-teal-500/20 flex items-center justify-center mb-6">
+                <Plane className="h-12 w-12 text-amber-400" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Your next adventure awaits</h3>
+              <p className="text-white/50 mb-6">Create your first trip to see it here</p>
+              <Link to="/trips/new" className="bg-gradient-to-r from-teal-500 to-amber-500 text-white px-5 py-2.5 rounded-xl font-semibold hover:scale-105 transition-all shadow-lg shadow-teal-500/20">Create First Trip</Link>
             </div>
-          </Card>
+          ) : (
+            <div className="space-y-2">
+              {data.upcomingTrips.map((trip) => (
+                <Link key={trip.id} to={`/trips/${trip.id}`} className="flex justify-between items-center py-4 hover:bg-white/5 px-4 rounded-xl transition-all group">
+                  <div>
+                    <p className="font-semibold text-white group-hover:text-amber-400 transition">{trip.title}</p>
+                    <p className="text-sm text-white/60">{trip.destination} • {dateLabel(trip.startDate)}</p>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-white/40 group-hover:text-amber-400 group-hover:translate-x-1 transition" />
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Side panel */}
-        <div className="md:col-span-1">
-          <Card className="bg-slate-900 text-white h-full border-none flex-col justify-between p-6 relative overflow-hidden">
-            <div className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-indigo-500/20 blur-xl" />
-            <div className="absolute -bottom-12 -left-12 h-24 w-24 rounded-full bg-sky-500/20 blur-xl" />
-            <div className="relative z-10">
-              <span className="inline-block bg-indigo-500/20 text-indigo-350 font-bold text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-full mb-4">
-                Travel Tip
-              </span>
-              <h3 className="text-lg font-bold mb-3 tracking-tight">Keep Budget in Check</h3>
-              <p className="text-slate-400 text-xs leading-relaxed font-light mb-6">
-                Did you know? Logging your micro-expenses like transit and street snacks daily keeps your tracking over 95% accurate. Adjust budget parameters in real-time under Trip Details.
-              </p>
-            </div>
-            <Link
-              to="/trips"
-              className="relative z-10 w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-950 font-semibold py-2.5 text-xs transition duration-200"
-            >
-              Browse All Trips
-            </Link>
-          </Card>
+        {/* Travel Tip Card */}
+        <div className="rounded-3xl bg-gradient-to-br from-amber-500/10 to-teal-500/10 backdrop-blur-xl border border-amber-400/20 p-8">
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin className="h-5 w-5 text-teal-400" />
+            <span className="bg-teal-500/20 text-teal-400 text-[10px] font-bold px-3 py-1 rounded-full border border-teal-400/30">TRAVEL TIP</span>
+          </div>
+          <h3 className="font-heading text-lg font-bold text-white mb-3">Keep Budget in Check</h3>
+          <p className="text-white/70 text-sm">Log expenses daily to stay 95% accurate with your budget tracking.</p>
+          <Link to="/trips" className="mt-6 w-full block text-center bg-white/10 hover:bg-white/20 border border-white/10 text-white font-semibold py-3 rounded-xl hover:border-amber-400/30 transition">Browse All Trips</Link>
         </div>
       </div>
     </div>
