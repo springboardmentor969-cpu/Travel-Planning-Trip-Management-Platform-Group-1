@@ -1,0 +1,168 @@
+.auth-page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(3, 4, 11, 0.3) 0%, rgba(3, 4, 11, 0.65) 100%), url('/images/ocean_sunrise_login.jpg') no-repeat center center / cover;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+  padding: 2.5rem !important;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.dark-theme .auth-card {
+  background: rgba(10, 10, 20, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(99, 102, 241, 0.35) !important;
+  box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Auth Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.auth-subtitle {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Glassmorphic Form Controls */
+.form-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.input-group-text {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-right: none !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+}
+
+.form-input {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  color: #ffffff !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 0.95rem !important;
+  backdrop-filter: blur(5px);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.form-input:focus {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 15px rgba(129, 140, 248, 0.25) !important;
+  outline: none;
+}
+
+.input-group:focus-within .input-group-text {
+  border-color: #818cf8 !important;
+  color: #818cf8 !important;
+}
+
+/* Primary Button with Advanced Glow */
+.btn-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4) !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6) !important;
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%) !important;
+}
+
+.btn-primary:active {
+  transform: translateY(0) !important;
+}
+
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Footer Link styling inside Glass Card */
+.auth-footer {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.9rem;
+}
+
+.auth-link {
+  color: #a5b4fc !important;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  color: #c7d2fe !important;
+  text-decoration: underline !important;
+}
+
+/* Alert Overrides */
+.alert {
+  border-radius: 10px !important;
+  backdrop-filter: blur(10px);
+  font-size: 0.88rem !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.18) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  color: #fca5a5 !important;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #a7f3d0 !important;
+}

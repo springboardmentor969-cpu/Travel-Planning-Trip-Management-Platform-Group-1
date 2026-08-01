@@ -1,0 +1,258 @@
+/* Navbar glass layout */
+.navbar {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 2px solid rgba(0, 210, 255, 0.28) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), 0 0 15px rgba(0, 210, 255, 0.08) !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  padding: 0.65rem 1rem !important;
+}
+
+.dark-theme .navbar {
+  background: rgba(13, 11, 28, 0.82) !important;
+  border-bottom: 2px solid rgba(0, 210, 255, 0.45) !important;
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 210, 255, 0.18) !important;
+}
+
+/* Brand logo */
+.nav-logo {
+  font-size: 1.55rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00D2FF 0%, #818cf8 50%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: transform 0.3s ease;
+  letter-spacing: -0.8px;
+}
+
+.nav-logo i {
+  color: #00D2FF !important;
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-logo:hover i {
+  transform: rotate(360deg) scale(1.15);
+}
+
+/* Nav links */
+.nav-link-item {
+  color: #374151 !important;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 1.1rem;
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+}
+
+.nav-link-item:hover {
+  color: #000000 !important;
+  background: rgba(0, 210, 255, 0.08) !important;
+  border: 1px solid rgba(0, 210, 255, 0.2) !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(0, 210, 255, 0.08);
+}
+
+.dark-theme .nav-link-item {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.dark-theme .nav-link-item:hover {
+  background: rgba(99, 102, 241, 0.2) !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.18);
+}
+
+/* Search bar styling */
+.nav-search-container {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+
+.nav-search-input {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 2.2rem !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 20px !important;
+  color: #111827 !important;
+  font-size: 0.88rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.nav-search-input::placeholder {
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.dark-theme .nav-search-input {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .nav-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.nav-search-input:focus {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: #00D2FF !important;
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.15) !important;
+}
+
+.dark-theme .nav-search-input:focus {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.3) !important;
+}
+
+.nav-search-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.dark-theme .nav-search-icon {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Welcome user tag */
+.user-welcome-badge {
+  background: rgba(0, 0, 0, 0.04);
+  color: #111827;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.dark-theme .user-welcome-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Theme toggle */
+.theme-toggle-btn {
+  border-radius: 20px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  padding: 0.4rem 1rem !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  color: #374151 !important;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #111827 !important;
+  border-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.dark-theme .theme-toggle-btn {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Logout button */
+.logout-btn {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+.register-nav-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 8px rgba(99, 102, 241, 0.2) !important;
+}
+
+.register-nav-btn:hover {
+  box-shadow: 0 5px 12px rgba(99, 102, 241, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-icon-wrapper {
+  height: 42px;
+  width: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 2px solid rgba(0, 210, 255, 0.4);
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.2);
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  animation: logo-glow-pulse 4s ease-in-out infinite;
+}
+
+.logo-icon {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transform: scale(1.32);
+  transition: transform 0.4s ease;
+}
+
+.logo-icon-wrapper:hover {
+  transform: rotateY(360deg) scale(1.15);
+  border-color: rgba(0, 210, 255, 0.85);
+  box-shadow: 0 0 22px rgba(0, 210, 255, 0.6);
+}
+
+@keyframes logo-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(0, 210, 255, 0.45);
+  }
+}
+
+.logo {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  margin: 0;
+  line-height: 1;
+}
+
+.logo span {
+  font-weight: 500;
+  color: #00D2FF;
+}
+
+/* Light Mode Overrides for Logo text */
+body:not(.dark-theme) .logo {
+  color: #0F2027;
+}
