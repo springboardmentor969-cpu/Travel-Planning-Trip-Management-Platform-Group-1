@@ -66,6 +66,11 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
     }
 
+    public User findEntityByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
+    }
+
     @Transactional(readOnly = true)
     public User getCurrentUser() {
         String email = SecurityUtils.getCurrentUserEmail();

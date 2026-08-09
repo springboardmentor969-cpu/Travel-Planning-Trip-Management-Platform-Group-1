@@ -40,3 +40,23 @@ export const expenseApi = {
 export const budgetApi = {
   get: (tripId) => api.get(`/trips/${tripId}/budget`).then((res) => res.data)
 };
+
+export const tripMemberApi = {
+  list: (tripId) => api.get(`/trips/${tripId}/members`).then((res) => res.data),
+  add: (tripId, payload) => api.post(`/trips/${tripId}/members`, payload).then((res) => res.data),
+  update: (tripId, userId, payload) => api.put(`/trips/${tripId}/members/${userId}`, payload).then((res) => res.data),
+  remove: (tripId, userId) => api.delete(`/trips/${tripId}/members/${userId}`)
+};
+
+export const tripDocumentApi = {
+  list: (tripId) => api.get(`/trips/${tripId}/documents`).then((res) => res.data),
+  upload: (tripId, file) => {
+    const body = new FormData();
+    body.append('file', file);
+    // A null header clears any inherited JSON default, letting the browser attach
+    // multipart/form-data together with its required boundary.
+    return api.post(`/trips/${tripId}/documents`, body, { headers: { 'Content-Type': null } }).then((res) => res.data);
+  },
+  download: (tripId, documentId) => api.get(`/trips/${tripId}/documents/${documentId}/download`, { responseType: 'blob' }).then((res) => res.data),
+  remove: (tripId, documentId) => api.delete(`/trips/${tripId}/documents/${documentId}`)
+};

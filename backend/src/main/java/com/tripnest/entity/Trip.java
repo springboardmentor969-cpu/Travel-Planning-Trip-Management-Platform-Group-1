@@ -54,6 +54,12 @@ public class Trip {
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripMember> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripDocument> documents = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -133,4 +139,9 @@ public class Trip {
     public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
     }
+
+    public List<TripMember> getMembers() { return members; }
+    public void setMembers(List<TripMember> members) { this.members = members; }
+    public List<TripDocument> getDocuments() { return documents; }
+    public void setDocuments(List<TripDocument> documents) { this.documents = documents; }
 }

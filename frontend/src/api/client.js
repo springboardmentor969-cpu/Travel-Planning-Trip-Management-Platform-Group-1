@@ -3,10 +3,7 @@ import axios from 'axios';
 export const api = axios.create({
   // In development Vite forwards this path to Spring Boot, avoiding browser CORS issues.
   // Set VITE_API_URL in production when the API is hosted separately.
-  baseURL: import.meta.env.VITE_API_URL || '/api',
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL: import.meta.env.VITE_API_URL || '/api'
 });
 
 // Request interceptor to add JWT token
