@@ -9,6 +9,7 @@ export default function BudgetExpense({ tripId }) {
   const [expenses, setExpenses] = useState([]);
   const [report, setReport] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingExpense, setEditingExpense] = useState(null);
 
   const loadAll = async () => {
     setIsLoading(true);
@@ -34,21 +35,33 @@ export default function BudgetExpense({ tripId }) {
   }, [tripId]);
 
   const refreshReport = async () => {
-    const [expenseData, reportData] = await Promise.all([
+    const [budgetData, expenseData, reportData] = await Promise.all([
+      budgetApi.getBudget(tripId),
       budgetApi.getExpenses(tripId),
       budgetApi.getExpenseReport(tripId),
     ]);
+    setBudget(budgetData);
     setExpenses(expenseData);
     setReport(reportData);
   };
 
+  const handleUpdateBudget = async (newBudget) => {
+    await budgetApi.updateBudget(tripId, newBudget);
+    await refreshReport();
+  };
+
   const handleAddExpense = async (payload) => {
-    await budgetApi.addExpense(tripId, payload);
+    if (editingExpense) {
+      await budgetApi.updateExpense(tripId, editingExpense.id, payload);
+      setEditingExpense(null);
+    } else {
+      await budgetApi.addExpense(tripId, payload);
+    }
     await refreshReport();
   };
 
   const handleDeleteExpense = async (expenseId) => {
-    if (!window.confirm("Delete this expense?")) return;
+    if (!window.confirm("Are you sure you want to delete this expense?")) return;
     await budgetApi.deleteExpense(tripId, expenseId);
     await refreshReport();
   };
@@ -61,30 +74,42 @@ export default function BudgetExpense({ tripId }) {
   if (isLoading) {
     return (
       <p className="py-10 text-center text-sm text-slate-400">
-        Loading budget…
+        Loading budget & expense management…
       </p>
     );
   }
 
   return (
-    <div>
-      <div className="mb-4 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 px-5 py-4">
-        <h2 className="flex items-center gap-2 text-base font-semibold text-slate-900">
-          💰 Budget & Expenses
+    <div className="space-y-6">
+      <div className="rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 p-5 border border-amber-200/50">
+        <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900">
+          💰 Budget & Expense Dashboard
         </h2>
         <p className="text-xs text-slate-500">
-          Track spending against your planned budget
+          Track expenses, set spending limits, and optimize travel costs
         </p>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-3">
-        <div className="lg:col-span-1">
-          <BudgetSummaryCard budget={budget} report={report} />
-        </div>
-        <div className="space-y-4 lg:col-span-2">
-          <ExpenseForm onSubmit={handleAddExpense} />
+      <BudgetSummaryCard
+        budget={budget}
+        report={report}
+        onUpdateBudget={handleUpdateBudget}
+      />
+
+      <div className="space-y-5">
+        <ExpenseForm
+          onSubmit={handleAddExpense}
+          initialData={editingExpense}
+          onCancel={() => setEditingExpense(null)}
+        />
+
+        <div>
+          <h3 className="mb-3 text-sm font-bold text-slate-900">
+            Recorded Expenses ({expenses.length})
+          </h3>
           <ExpenseList
             expenses={expenses}
+            onEdit={(exp) => setEditingExpense(exp)}
             onDelete={handleDeleteExpense}
             onUploadReceipt={handleUploadReceipt}
           />

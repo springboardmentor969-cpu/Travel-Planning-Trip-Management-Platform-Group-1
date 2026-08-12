@@ -47,6 +47,20 @@ export const groupApi = {
     );
     return data;
   },
+
+  getPendingInvitations: async () => {
+    const { data } = await axiosClient.get("/invitations/pending");
+    return data;
+  },
+
+  acceptInvitation: async (invitationId) => {
+    const { data } = await axiosClient.post(`/invitations/${invitationId}/accept`);
+    return data;
+  },
+
+  rejectInvitation: async (invitationId) => {
+    await axiosClient.post(`/invitations/${invitationId}/reject`);
+  },
 };
 
 export default groupApi;

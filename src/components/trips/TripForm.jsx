@@ -54,9 +54,15 @@ export default function TripForm({ initialValues, onSubmit, submitLabel }) {
         travelerCount: Number(form.travelerCount),
       });
     } catch (err) {
-      setSubmitError(
-        err.response?.data?.message || "Could not save this trip."
-      );
+      const rawError = err.response?.data;
+      const errorMsg =
+        typeof rawError === "string"
+          ? rawError
+          : rawError?.message ||
+            (err.message === "Network Error"
+              ? "Unable to connect to backend server. Please verify the Spring Boot backend is running on port 8080."
+              : "Could not save this trip. Please check your inputs.");
+      setSubmitError(errorMsg);
     } finally {
       setIsSubmitting(false);
     }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import notificationApi from "../../api/notificationApi";
+import groupApi from "../../api/groupApi";
 import NotificationItem from "../../components/notifications/NotificationItem";
 
 const PREFERENCE_FIELDS = [
@@ -12,6 +13,7 @@ const PREFERENCE_FIELDS = [
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
+  const [invitations, setInvitations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [preferences, setPreferences] = useState(null);
   const [filter, setFilter] = useState("all");
@@ -19,12 +21,14 @@ export default function NotificationsPage() {
   const loadAll = async () => {
     setIsLoading(true);
     try {
-      const [list, prefs] = await Promise.all([
+      const [list, prefs, pendingInvites] = await Promise.all([
         notificationApi.getNotifications(),
         notificationApi.getPreferences().catch(() => null),
+        groupApi.getPendingInvitations().catch(() => []),
       ]);
       setNotifications(list);
       setPreferences(prefs);
+      setInvitations(pendingInvites);
     } finally {
       setIsLoading(false);
     }
@@ -33,6 +37,25 @@ export default function NotificationsPage() {
   useEffect(() => {
     loadAll();
   }, []);
+
+  const handleAcceptInvite = async (invitationId) => {
+    try {
+      await groupApi.acceptInvitation(invitationId);
+      alert("Invitation accepted! You are now a trip member.");
+      await loadAll();
+    } catch (err) {
+      alert(err?.response?.data?.message || "Failed to accept invitation.");
+    }
+  };
+
+  const handleRejectInvite = async (invitationId) => {
+    try {
+      await groupApi.rejectInvitation(invitationId);
+      setInvitations((prev) => prev.filter((i) => i.id !== invitationId));
+    } catch (err) {
+      alert(err?.response?.data?.message || "Failed to reject invitation.");
+    }
+  };
 
   const handleMarkRead = async (id) => {
     await notificationApi.markAsRead(id);
@@ -61,14 +84,54 @@ export default function NotificationsPage() {
       {/* Header banner */}
       <div className="bg-gradient-to-r from-violet-600 to-purple-700 text-white">
         <div className="mx-auto max-w-3xl px-4 py-10">
-          <h1 className="text-2xl font-semibold sm:text-3xl">🔔 Notifications</h1>
+          <h1 className="text-2xl font-semibold sm:text-3xl">🔔 Notifications & Invites</h1>
           <p className="mt-1 text-violet-100">
-            Trip reminders, budget alerts, and updates in one place.
+            Trip reminders, group invitations, budget alerts, and updates.
           </p>
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl px-4 py-8">
+      <div className="mx-auto max-w-3xl px-4 py-8 space-y-6">
+        {/* Pending Group Invitations Section */}
+        {invitations.length > 0 && (
+          <div className="rounded-2xl border border-purple-200 bg-purple-50/60 p-5 shadow-sm">
+            <h2 className="mb-3 flex items-center gap-2 text-base font-semibold text-purple-900">
+              <span>👥</span> Pending Trip Invitations ({invitations.length})
+            </h2>
+            <div className="space-y-3">
+              {invitations.map((invite) => (
+                <div
+                  key={invite.id}
+                  className="flex items-center justify-between rounded-xl bg-white p-4 shadow-sm"
+                >
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">
+                      You were invited to join a trip!
+                    </p>
+                    <p className="text-xs text-slate-500">
+                      Role: <span className="font-medium text-purple-700">{invite.role}</span> · Email: {invite.email}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleAcceptInvite(invite.id)}
+                      className="rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700 transition"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => handleRejectInvite(invite.id)}
+                      className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 transition"
+                    >
+                      Decline
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="grid gap-6 md:grid-cols-3">
           <div className="md:col-span-2">
             <div className="mb-3 flex gap-2">

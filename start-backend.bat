@@ -1,3 +1,3 @@
 @echo off
-cd /d "%~dp0TripNest Backend"
+cd /d "%~dp0backend"
 call run-backend.bat
