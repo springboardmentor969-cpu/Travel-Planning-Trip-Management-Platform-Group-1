@@ -19,6 +19,26 @@ CREATE TABLE IF NOT EXISTS trips (
     CONSTRAINT fk_trips_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS trip_collaborators (
+    trip_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    PRIMARY KEY (trip_id, user_id),
+    CONSTRAINT fk_trip_collaborators_trip FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE,
+    CONSTRAINT fk_trip_collaborators_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS trip_invitations (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    trip_id BIGINT NOT NULL,
+    invited_by_user_id BIGINT NOT NULL,
+    invitee_email VARCHAR(160) NOT NULL,
+    status VARCHAR(24) NOT NULL,
+    created_at DATETIME NOT NULL,
+    responded_at DATETIME,
+    CONSTRAINT fk_trip_invitations_trip FOREIGN KEY (trip_id) REFERENCES trips(id) ON DELETE CASCADE,
+    CONSTRAINT fk_trip_invitations_invited_by FOREIGN KEY (invited_by_user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS itineraries (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     day_number INT NOT NULL,

@@ -2,6 +2,10 @@ package com.tripnest.controller;
 
 import com.tripnest.dto.TripDetailsDto;
 import com.tripnest.dto.TripDto;
+import com.tripnest.dto.UserDto;
+import com.tripnest.dto.CollaboratorInviteRequest;
+import com.tripnest.dto.TripInvitationDto;
+import com.tripnest.service.TripInvitationService;
 import com.tripnest.service.TripService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -22,9 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/trips")
 public class TripController {
     private final TripService tripService;
+    private final TripInvitationService tripInvitationService;
 
-    public TripController(TripService tripService) {
+    public TripController(TripService tripService, TripInvitationService tripInvitationService) {
         this.tripService = tripService;
+        this.tripInvitationService = tripInvitationService;
     }
 
     @PostMapping
@@ -61,6 +67,34 @@ public class TripController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         tripService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/collaborators")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<UserDto>> listCollaborators(@PathVariable Long id) {
+        return ResponseEntity.ok(tripService.listCollaborators(id));
+    }
+
+    @GetMapping("/{id}/invites")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<TripInvitationDto>> listInvites(@PathVariable Long id) {
+        return ResponseEntity.ok(tripInvitationService.listForTrip(id));
+    }
+
+    @PostMapping("/{id}/invites")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<TripInvitationDto> inviteCollaborator(
+            @PathVariable Long id,
+            @Valid @RequestBody CollaboratorInviteRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(tripInvitationService.invite(id, request.email()));
+    }
+
+    @DeleteMapping("/{id}/collaborators/{collaboratorId}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<UserDto>> removeCollaborator(@PathVariable Long id, @PathVariable Long collaboratorId) {
+        tripInvitationService.removeCollaborator(id, collaboratorId);
         return ResponseEntity.noContent().build();
     }
 }

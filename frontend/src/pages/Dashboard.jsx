@@ -2,7 +2,7 @@ import { ArrowRight, CalendarDays, PiggyBank, Plane, Sparkles, WalletCards } fro
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getErrorMessage } from '../api/client';
-import { dashboardApi } from '../api/tripService';
+import { dashboardApi, invitationsApi } from '../api/tripService';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -10,11 +10,57 @@ import { currency, dateLabel } from '../utils';
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
+  const [invitations, setInvitations] = useState(null);
   const [error, setError] = useState('');
+  const [inviteError, setInviteError] = useState('');
+
+  const loadDashboard = async () => {
+    const [dashboard, inviteList] = await Promise.all([
+      dashboardApi.get(),
+      invitationsApi.listMine()
+    ]);
+    setData(dashboard);
+    setInvitations(inviteList);
+  };
 
   useEffect(() => {
-    dashboardApi.get().then(setData).catch((err) => setError(getErrorMessage(err)));
+    let active = true;
+
+    const refresh = async () => {
+      try {
+        const [dashboard, inviteList] = await Promise.all([
+          dashboardApi.get(),
+          invitationsApi.listMine()
+        ]);
+        if (!active) return;
+        setData(dashboard);
+        setInvitations(inviteList);
+      } catch (err) {
+        if (!active) return;
+        setError(getErrorMessage(err));
+      }
+    };
+
+    refresh();
+    const intervalId = window.setInterval(refresh, 10000);
+    window.addEventListener('focus', refresh);
+
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+      window.removeEventListener('focus', refresh);
+    };
   }, []);
+
+  const acceptInvite = async (inviteId) => {
+    await invitationsApi.accept(inviteId);
+    await loadDashboard();
+  };
+
+  const rejectInvite = async (inviteId) => {
+    await invitationsApi.reject(inviteId);
+    await loadDashboard();
+  };
 
   if (error) return <Card><p className="text-sm text-red-600">{error}</p></Card>;
   if (!data) return <LoadingSpinner label="Loading dashboard" />;
@@ -57,6 +103,44 @@ export default function Dashboard() {
           </Card>
         ))}
       </div>
+
+      <Card>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600">Trip invitations</p>
+            <h2 className="mt-2 text-xl font-bold text-slate-950">Pending invites to join other trips</h2>
+            <p className="mt-1 text-sm text-slate-500">Open an invite to decide whether you want to join the trip workspace.</p>
+          </div>
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+            {invitations?.length || 0} pending
+          </span>
+        </div>
+
+        {inviteError && <p className="mt-4 text-sm text-red-600">{inviteError}</p>}
+        {!invitations ? (
+          <div className="mt-4 text-sm text-slate-500">Loading invitations...</div>
+        ) : invitations.length === 0 ? (
+          <p className="mt-4 text-sm text-slate-500">No pending invitations.</p>
+        ) : (
+          <div className="mt-4 space-y-3">
+            {invitations.map((invite) => (
+              <div key={invite.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-slate-950">{invite.tripTitle}</p>
+                    <p className="text-sm text-slate-500">{invite.tripDestination}</p>
+                    <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-400">Invited by {invite.invitedByName}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button onClick={() => acceptInvite(invite.id)}>Accept</Button>
+                    <Button variant="secondary" onClick={() => rejectInvite(invite.id)}>Reject</Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
 
       <Card className="overflow-hidden p-0">
         <div className="border-b border-slate-200/70 px-5 py-4 md:px-6">

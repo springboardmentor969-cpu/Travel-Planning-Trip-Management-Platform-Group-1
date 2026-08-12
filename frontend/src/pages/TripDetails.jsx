@@ -8,6 +8,7 @@ import Card from '../components/Card';
 import FormInput from '../components/FormInput';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Modal from '../components/Modal';
+import { useAuth } from '../contexts/AuthContext';
 import { currency, dateLabel } from '../utils';
 
 const activityTypes = [
@@ -25,15 +26,54 @@ const formatActivityTime = (value) => (value ? value.slice(0, 5) : '09:00');
 
 export default function TripDetails() {
   const { id } = useParams();
+  const { user } = useAuth();
   const [details, setDetails] = useState(null);
+  const [invites, setInvites] = useState([]);
   const [error, setError] = useState('');
   const [editing, setEditing] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [collaboratorEmail, setCollaboratorEmail] = useState('');
+  const [collaboratorError, setCollaboratorError] = useState('');
+  const [collaboratorSaving, setCollaboratorSaving] = useState(false);
 
-  const load = () => tripApi.details(id).then(setDetails).catch((err) => setError(getErrorMessage(err)));
+  const load = async () => {
+    const [tripDetails, tripInvites] = await Promise.all([
+      tripApi.details(id),
+      tripApi.listInvites(id)
+    ]);
+    setDetails(tripDetails);
+    setInvites(tripInvites);
+    setError('');
+  };
 
   useEffect(() => {
-    load();
+    let active = true;
+
+    const refresh = async () => {
+      try {
+        const [tripDetails, tripInvites] = await Promise.all([
+          tripApi.details(id),
+          tripApi.listInvites(id)
+        ]);
+        if (!active) return;
+        setDetails(tripDetails);
+        setInvites(tripInvites);
+        setError('');
+      } catch (err) {
+        if (!active) return;
+        setError(getErrorMessage(err));
+      }
+    };
+
+    refresh();
+    const intervalId = window.setInterval(refresh, 10000);
+    window.addEventListener('focus', refresh);
+
+    return () => {
+      active = false;
+      window.clearInterval(intervalId);
+      window.removeEventListener('focus', refresh);
+    };
   }, [id]);
 
   const saveItinerary = async (event) => {
@@ -58,10 +98,31 @@ export default function TripDetails() {
     load();
   };
 
+  const addCollaborator = async (event) => {
+    event.preventDefault();
+    setCollaboratorSaving(true);
+    setCollaboratorError('');
+    try {
+      await tripApi.inviteCollaborator(id, collaboratorEmail);
+      setCollaboratorEmail('');
+      load();
+    } catch (err) {
+      setCollaboratorError(getErrorMessage(err));
+    } finally {
+      setCollaboratorSaving(false);
+    }
+  };
+
+  const removeCollaborator = async (collaboratorId) => {
+    await tripApi.removeCollaborator(id, collaboratorId);
+    load();
+  };
+
   if (error) return <Card><p className="text-sm text-red-600">{error}</p></Card>;
   if (!details) return <LoadingSpinner label="Loading trip details" />;
 
-  const { trip, itinerary, expenses, budgetSummary } = details;
+  const { trip, itinerary, expenses, budgetSummary, collaborators = [] } = details;
+  const isOwner = user?.id === trip.userId;
 
   return (
     <div className="space-y-6">
@@ -69,10 +130,11 @@ export default function TripDetails() {
         <div>
           <h1 className="text-2xl font-semibold text-slate-950">{trip.title}</h1>
           <p className="mt-1 text-sm text-slate-500">{trip.destination} · {dateLabel(trip.startDate)} - {dateLabel(trip.endDate)}</p>
+          {!isOwner && <p className="mt-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">Shared trip access</p>}
         </div>
         <div className="flex gap-2">
           <Link to={`/trips/${id}/expenses`}><Button variant="secondary"><ReceiptText className="h-4 w-4" />Expenses</Button></Link>
-          <Link to={`/trips/${id}/edit`}><Button><Edit className="h-4 w-4" />Edit</Button></Link>
+          {isOwner && <Link to={`/trips/${id}/edit`}><Button><Edit className="h-4 w-4" />Edit</Button></Link>}
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-3">
@@ -80,6 +142,77 @@ export default function TripDetails() {
         <Card><p className="text-sm text-slate-500">Spent</p><p className="mt-1 text-xl font-semibold">{currency(budgetSummary.totalExpenses)}</p></Card>
         <Card><p className="text-sm text-slate-500">Remaining</p><p className="mt-1 text-xl font-semibold text-green-700">{currency(budgetSummary.remainingAmount)}</p></Card>
       </div>
+      <Card>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold">Collaborators</h2>
+            <p className="mt-1 text-sm text-slate-500">Send an invite by email. The recipient can accept or reject it from their dashboard.</p>
+          </div>
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">{collaborators.length} member{collaborators.length === 1 ? '' : 's'}</span>
+        </div>
+        <div className="space-y-3">
+          {collaborators.length === 0 ? (
+            <p className="text-sm text-slate-500">No collaborators added yet.</p>
+          ) : collaborators.map((member) => (
+            <div key={member.id} className="flex items-center justify-between rounded-2xl border border-slate-200 px-4 py-3">
+              <div>
+                <p className="font-medium text-slate-950">{member.name}</p>
+                <p className="text-sm text-slate-500">{member.email}</p>
+              </div>
+              {isOwner && member.id !== trip.userId && (
+                <button className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50" onClick={() => removeCollaborator(member.id)}>
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+        {isOwner && (
+          <form onSubmit={addCollaborator} className="mt-4 flex flex-col gap-3 sm:flex-row">
+            <FormInput
+              label="Invite by email"
+              name="collaboratorEmail"
+              type="email"
+              value={collaboratorEmail}
+              onChange={(event) => setCollaboratorEmail(event.target.value)}
+              placeholder="teammate@example.com"
+              required
+            />
+            <div className="sm:pt-6">
+              <Button type="submit" disabled={collaboratorSaving}><Plus className="h-4 w-4" />Invite</Button>
+            </div>
+          </form>
+        )}
+        {collaboratorError && <p className="mt-3 text-sm text-red-600">{collaboratorError}</p>}
+      </Card>
+
+      {isOwner && (
+        <Card>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-semibold">Pending invitations</h2>
+              <p className="mt-1 text-sm text-slate-500">Watch who has been invited and whether they accepted or rejected.</p>
+            </div>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">{invites.length} total</span>
+          </div>
+          <div className="space-y-3">
+            {invites.length === 0 ? (
+              <p className="text-sm text-slate-500">No invitations sent yet.</p>
+            ) : invites.map((invite) => (
+              <div key={invite.id} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 px-4 py-3">
+                <div>
+                  <p className="font-medium text-slate-950">{invite.inviteeEmail}</p>
+                  <p className="text-sm text-slate-500">Sent at {invite.createdAt ? dateLabel(invite.createdAt) : 'unknown'}</p>
+                </div>
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${invite.status === 'ACCEPTED' ? 'bg-emerald-50 text-emerald-700' : invite.status === 'REJECTED' ? 'bg-rose-50 text-rose-700' : 'bg-amber-50 text-amber-700'}`}>
+                  {invite.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
       <Card>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Itinerary</h2>

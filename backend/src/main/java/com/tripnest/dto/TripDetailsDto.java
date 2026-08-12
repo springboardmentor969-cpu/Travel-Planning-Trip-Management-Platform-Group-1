@@ -6,6 +6,7 @@ public record TripDetailsDto(
         TripDto trip,
         List<ItineraryDto> itinerary,
         List<ExpenseDto> expenses,
-        BudgetSummaryDto budgetSummary
+        BudgetSummaryDto budgetSummary,
+        List<UserDto> collaborators
 ) {
 }

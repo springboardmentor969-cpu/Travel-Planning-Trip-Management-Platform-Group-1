@@ -24,14 +24,13 @@ public class DashboardService {
 
     public DashboardDto getDashboard() {
         Long userId = userService.getCurrentUser().getId();
-        BigDecimal totalBudget = tripRepository.findByUserIdOrderByStartDateAsc(userId).stream()
-                .map(trip -> trip.getBudget() == null ? BigDecimal.ZERO : trip.getBudget())
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalExpenses = expenseRepository.sumByTripUserId(userId);
-        if (totalExpenses == null) totalExpenses = BigDecimal.ZERO;
+        BigDecimal totalBudget = tripRepository.findAccessibleByUserId(userId).stream()
+            .map(trip -> trip.getBudget() == null ? BigDecimal.ZERO : trip.getBudget())
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalExpenses = expenseRepository.sumByAccessibleUserId(userId);
         return new DashboardDto(
-                tripRepository.countByUserId(userId),
-                tripRepository.findTop5ByUserIdAndStartDateGreaterThanEqualOrderByStartDateAsc(userId, LocalDate.now()).stream()
+            tripRepository.countAccessibleByUserId(userId),
+            tripRepository.findUpcomingAccessibleByUserId(userId, LocalDate.now()).stream().limit(5)
                         .map(TripMapper::toDto)
                         .toList(),
                 totalExpenses,

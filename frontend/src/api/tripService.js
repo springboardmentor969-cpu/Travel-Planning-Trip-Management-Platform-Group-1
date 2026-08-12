@@ -19,9 +19,19 @@ export const tripApi = {
   list: () => api.get('/trips').then((res) => res.data),
   get: (id) => api.get(`/trips/${id}`).then((res) => res.data),
   details: (id) => api.get(`/trips/${id}/details`).then((res) => res.data),
+  collaborators: (id) => api.get(`/trips/${id}/collaborators`).then((res) => res.data),
+  inviteCollaborator: (id, email) => api.post(`/trips/${id}/invites`, { email }).then((res) => res.data),
+  listInvites: (id) => api.get(`/trips/${id}/invites`).then((res) => res.data),
+  removeCollaborator: (id, collaboratorId) => api.delete(`/trips/${id}/collaborators/${collaboratorId}`).then((res) => res.data),
   create: (payload) => api.post('/trips', payload).then((res) => res.data),
   update: (id, payload) => api.put(`/trips/${id}`, payload).then((res) => res.data),
   remove: (id) => api.delete(`/trips/${id}`)
+};
+
+export const invitationsApi = {
+  listMine: () => api.get('/invitations').then((res) => res.data),
+  accept: (id) => api.post(`/invitations/${id}/accept`).then((res) => res.data),
+  reject: (id) => api.post(`/invitations/${id}/reject`).then((res) => res.data)
 };
 
 export const itineraryApi = {

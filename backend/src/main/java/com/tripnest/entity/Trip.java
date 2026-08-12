@@ -10,13 +10,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "trips")
@@ -53,6 +57,14 @@ public class Trip {
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses = new ArrayList<>();
+
+        @ManyToMany(fetch = FetchType.LAZY)
+        @JoinTable(
+            name = "trip_collaborators",
+            joinColumns = @JoinColumn(name = "trip_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+        )
+        private Set<User> collaborators = new LinkedHashSet<>();
 
     public Long getId() {
         return id;
@@ -132,5 +144,13 @@ public class Trip {
 
     public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
+    }
+
+    public Set<User> getCollaborators() {
+        return collaborators;
+    }
+
+    public void setCollaborators(Set<User> collaborators) {
+        this.collaborators = collaborators;
     }
 }

@@ -23,8 +23,11 @@ public class BudgetService {
 
     public BudgetSummaryDto getSummary(Long tripId) {
         Trip trip = tripRepository.findById(tripId)
-                .orElseThrow(() -> new com.tripnest.exception.ResourceNotFoundException("Trip not found with id " + tripId));
-        if (!trip.getUser().getId().equals(userService.getCurrentUser().getId())) {
+            .orElseThrow(() -> new com.tripnest.exception.ResourceNotFoundException("Trip not found with id " + tripId));
+        boolean owner = trip.getUser().getId().equals(userService.getCurrentUser().getId());
+        boolean collaborator = trip.getCollaborators().stream()
+            .anyMatch(user -> user.getId().equals(userService.getCurrentUser().getId()));
+        if (!owner && !collaborator) {
             throw new com.tripnest.exception.ResourceNotFoundException("Trip not found with id " + tripId);
         }
         BigDecimal totalExpenses = expenseRepository.sumAmountByTripId(tripId);

@@ -7,9 +7,11 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Table from '../components/Table';
+import { useAuth } from '../contexts/AuthContext';
 import { currency, dateLabel } from '../utils';
 
 export default function Trips() {
+  const { user } = useAuth();
   const [trips, setTrips] = useState(null);
   const [error, setError] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
@@ -43,6 +45,7 @@ export default function Trips() {
     { key: 'destination', header: 'Destination' },
     { key: 'dates', header: 'Dates', render: (trip) => `${dateLabel(trip.startDate)} - ${dateLabel(trip.endDate)}` },
     { key: 'budget', header: 'Budget', render: (trip) => currency(trip.budget) },
+    { key: 'access', header: 'Access', render: (trip) => (trip.userId === user?.id ? 'Owner' : 'Shared') },
     {
       key: 'status',
       header: 'Status',
@@ -54,8 +57,8 @@ export default function Trips() {
       render: (trip) => (
         <div className="flex gap-2">
           <Link to={`/trips/${trip.id}`} className="rounded-full border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-900" title="View"><Eye className="h-4 w-4" /></Link>
-          <Link to={`/trips/${trip.id}/edit`} className="rounded-full border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-900" title="Edit"><Edit className="h-4 w-4" /></Link>
-          <button onClick={() => remove(trip.id)} className="rounded-full border border-red-100 p-2.5 text-red-600 transition hover:bg-red-50" title="Delete"><Trash2 className="h-4 w-4" /></button>
+          {trip.userId === user?.id && <Link to={`/trips/${trip.id}/edit`} className="rounded-full border border-slate-200 p-2.5 text-slate-500 transition hover:bg-slate-50 hover:text-slate-900" title="Edit"><Edit className="h-4 w-4" /></Link>}
+          {trip.userId === user?.id && <button onClick={() => remove(trip.id)} className="rounded-full border border-red-100 p-2.5 text-red-600 transition hover:bg-red-50" title="Delete"><Trash2 className="h-4 w-4" /></button>}
         </div>
       )
     }

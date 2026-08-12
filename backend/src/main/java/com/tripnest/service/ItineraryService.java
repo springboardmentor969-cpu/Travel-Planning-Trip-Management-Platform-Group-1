@@ -22,7 +22,7 @@ public class ItineraryService {
     }
 
     public ItineraryDto create(Long tripId, ItineraryDto dto) {
-        Trip trip = tripService.findOwnedEntity(tripId);
+        Trip trip = tripService.findAccessibleEntity(tripId);
         Itinerary itinerary = new Itinerary();
         ItineraryMapper.updateEntity(itinerary, dto);
         itinerary.setTrip(trip);
@@ -31,7 +31,7 @@ public class ItineraryService {
 
     @Transactional(readOnly = true)
     public List<ItineraryDto> list(Long tripId) {
-        tripService.findOwnedEntity(tripId);
+        tripService.findAccessibleEntity(tripId);
         return itineraryRepository.findByTripIdOrderByDayNumberAscIdAsc(tripId).stream()
                 .map(ItineraryMapper::toDto)
                 .toList();
@@ -48,7 +48,7 @@ public class ItineraryService {
     }
 
     private Itinerary findOwned(Long tripId, Long itineraryId) {
-        tripService.findOwnedEntity(tripId);
+        tripService.findAccessibleEntity(tripId);
         Itinerary itinerary = itineraryRepository.findById(itineraryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Itinerary item not found with id " + itineraryId));
         if (!itinerary.getTrip().getId().equals(tripId)) {

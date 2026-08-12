@@ -27,9 +27,13 @@ User payload:
 | GET | `/trips` | List trips |
 | GET | `/trips?userId=1` | List trips for one user |
 | GET | `/trips/{id}` | View a trip |
-| GET | `/trips/{id}/details` | View trip with itinerary, expenses, and budget |
+| GET | `/trips/{id}/details` | View trip with itinerary, expenses, budget, and collaborators |
 | PUT | `/trips/{id}` | Update a trip |
 | DELETE | `/trips/{id}` | Delete a trip |
+| GET | `/trips/{id}/collaborators` | List trip collaborators |
+| GET | `/trips/{id}/invites` | List trip invitations |
+| POST | `/trips/{id}/invites` | Invite a collaborator by email |
+| DELETE | `/trips/{id}/collaborators/{userId}` | Remove a collaborator |
 
 Trip payload:
 
@@ -44,6 +48,22 @@ Trip payload:
   "userId": 1
 }
 ```
+
+Collaborator invite payload:
+
+```json
+{
+  "email": "friend@example.com"
+}
+```
+
+## Invitations
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/invitations` | List my pending trip invitations |
+| POST | `/invitations/{id}/accept` | Accept a trip invitation |
+| POST | `/invitations/{id}/reject` | Reject a trip invitation |
 
 ## Itinerary
 
@@ -75,6 +95,8 @@ Itinerary payload:
 | PUT | `/trips/{tripId}/expenses/{expenseId}` | Edit expense |
 | DELETE | `/trips/{tripId}/expenses/{expenseId}` | Delete expense |
 | GET | `/trips/{tripId}/budget` | Show budget summary |
+
+Trip budget and expense data are shared with trip collaborators as well as the owner.
 
 Expense payload:
 

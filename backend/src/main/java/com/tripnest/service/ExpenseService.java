@@ -22,7 +22,7 @@ public class ExpenseService {
     }
 
     public ExpenseDto create(Long tripId, ExpenseDto dto) {
-        Trip trip = tripService.findOwnedEntity(tripId);
+        Trip trip = tripService.findAccessibleEntity(tripId);
         Expense expense = new Expense();
         ExpenseMapper.updateEntity(expense, dto);
         expense.setTrip(trip);
@@ -31,7 +31,7 @@ public class ExpenseService {
 
     @Transactional(readOnly = true)
     public List<ExpenseDto> list(Long tripId) {
-        tripService.findOwnedEntity(tripId);
+        tripService.findAccessibleEntity(tripId);
         return expenseRepository.findByTripIdOrderByExpenseDateDescIdDesc(tripId).stream()
                 .map(ExpenseMapper::toDto)
                 .toList();
@@ -48,7 +48,7 @@ public class ExpenseService {
     }
 
     private Expense findOwned(Long tripId, Long expenseId) {
-        tripService.findOwnedEntity(tripId);
+        tripService.findAccessibleEntity(tripId);
         Expense expense = expenseRepository.findById(expenseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Expense not found with id " + expenseId));
         if (!expense.getTrip().getId().equals(tripId)) {
