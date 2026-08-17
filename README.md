@@ -175,3 +175,34 @@ If you encounter errors saying address is already in use:
 ### Custom Configurations
 - **Database Connection**: Update `backend/src/main/resources/application.properties` (set `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`).
 - **Frontend API Endpoint**: Alter the `VITE_API_URL` environment variable or edit `frontend/src/api/client.js` (defaults to `http://localhost:8080/api`).
+
+---
+
+## Production deployment (free student demo)
+
+The included `render.yaml` deploys the Spring API on Render Free, and `frontend/vercel.json` enables Vercel SPA routing. Create a free TiDB Cloud Starter cluster and use its MySQL-compatible TLS connection values in Render:
+
+| Render variable | Value |
+| --- | --- |
+| `DB_URL` | TiDB JDBC URL, including its required TLS parameters |
+| `DB_USERNAME` / `DB_PASSWORD` | TiDB database credentials |
+| `JWT_SECRET` | A unique random secret of at least 32 characters |
+| `CORS_ALLOWED_ORIGINS` | The exact Vercel URL, for example `https://tripnest.vercel.app` |
+| `SPRING_PROFILES_ACTIVE` | `prod` |
+
+1. Push this repository to GitHub and create a Render Web Service from `render.yaml`. Set the variables above before deploying.
+2. In Vercel, import the same repository and set the Root Directory to `frontend`. Set `VITE_API_URL` to `https://<render-service>.onrender.com/api` and `VITE_DOCUMENT_UPLOADS_ENABLED=false`.
+3. Deploy Vercel, then update Render `CORS_ALLOWED_ORIGINS` with the resulting Vercel URL and redeploy Render.
+
+Both providers supply HTTPS automatically. Render Free services sleep after 15 minutes without traffic; the first request can take about a minute. Document uploads are intentionally disabled in production because Render Free has no persistent filesystem.
+
+### Test commands
+
+```powershell
+cd backend
+mvn test
+cd ..\frontend
+npm.cmd run test
+npm.cmd run build
+node ..\scripts\api_test_flow.js
+```

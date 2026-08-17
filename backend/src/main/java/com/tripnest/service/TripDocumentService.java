@@ -38,12 +38,14 @@ public class TripDocumentService {
     private final TripService tripService;
     private final UserService userService;
     private final Path uploadDirectory;
+    private final boolean uploadsEnabled;
 
-    public TripDocumentService(TripDocumentRepository documentRepository, TripService tripService, UserService userService, @Value("${app.upload.directory:uploads}") String uploadDirectory) {
+    public TripDocumentService(TripDocumentRepository documentRepository, TripService tripService, UserService userService, @Value("${app.upload.directory:uploads}") String uploadDirectory, @Value("${app.upload.enabled:true}") boolean uploadsEnabled) {
         this.documentRepository = documentRepository;
         this.tripService = tripService;
         this.userService = userService;
         this.uploadDirectory = Path.of(uploadDirectory).toAbsolutePath().normalize();
+        this.uploadsEnabled = uploadsEnabled;
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +55,7 @@ public class TripDocumentService {
     }
 
     public TripDocumentDto upload(Long tripId, MultipartFile file) {
+        ensureUploadsEnabled();
         Trip trip = tripService.findEditableEntity(tripId);
         validate(file);
         String originalFilename = Path.of(file.getOriginalFilename()).getFileName().toString();
@@ -76,6 +79,7 @@ public class TripDocumentService {
 
     @Transactional(readOnly = true)
     public DownloadedDocument download(Long tripId, Long documentId) {
+        ensureUploadsEnabled();
         tripService.findAccessibleEntity(tripId);
         TripDocument document = find(tripId, documentId);
         Path path = uploadDirectory.resolve(document.getStorageKey()).normalize();
@@ -84,6 +88,7 @@ public class TripDocumentService {
     }
 
     public void delete(Long tripId, Long documentId) {
+        ensureUploadsEnabled();
         tripService.findEditableEntity(tripId);
         TripDocument document = find(tripId, documentId);
         try { Files.deleteIfExists(uploadDirectory.resolve(document.getStorageKey()).normalize()); }
@@ -93,6 +98,9 @@ public class TripDocumentService {
 
     private TripDocument find(Long tripId, Long documentId) {
         return documentRepository.findByIdAndTripId(documentId, tripId).orElseThrow(() -> new ResourceNotFoundException("Document not found"));
+    }
+    private void ensureUploadsEnabled() {
+        if (!uploadsEnabled) throw new IllegalStateException("Document uploads are unavailable in the hosted demo because free hosting does not provide persistent file storage");
     }
     private void validate(MultipartFile file) {
         if (file == null || file.isEmpty()) throw new IllegalArgumentException("Select a file to upload");

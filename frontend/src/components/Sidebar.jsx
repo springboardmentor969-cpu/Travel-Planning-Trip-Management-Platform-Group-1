@@ -1,10 +1,11 @@
-import { CalendarDays, Globe2, LayoutDashboard, ReceiptText, UserCircle2 } from 'lucide-react';
+import { BarChart3, CalendarDays, Globe2, LayoutDashboard, ReceiptText, UserCircle2 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 const links = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/trips', label: 'Trips', icon: CalendarDays },
   { to: '/destinations', label: 'Destinations', icon: Globe2 },
+  { to: '/analytics', label: 'Analytics', icon: BarChart3 },
   { to: '/trips/new', label: 'Create Trip', icon: ReceiptText },
   { to: '/profile', label: 'Profile', icon: UserCircle2 }
 ];

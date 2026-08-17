@@ -16,6 +16,8 @@ import NotFound from './pages/NotFound.jsx';
 import Profile from './pages/Profile.jsx';
 import TripDetails from './pages/TripDetails.jsx';
 import Trips from './pages/Trips.jsx';
+import Analytics from './pages/Analytics.jsx';
+import AdminAnalytics from './pages/AdminAnalytics.jsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -37,6 +39,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/trips/new" element={<CreateTrip />} />
             <Route path="/destinations" element={<Destinations />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
             <Route path="/trips/:id" element={<TripDetails />} />
             <Route path="/trips/:id/edit" element={<EditTrip />} />
             <Route path="/trips/:id/budget" element={<Budget />} />

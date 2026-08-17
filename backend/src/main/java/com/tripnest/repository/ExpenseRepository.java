@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByTripIdOrderByExpenseDateDescIdDesc(Long tripId);
 
+    List<Expense> findByTripUserId(Long userId);
+
     @Query("select coalesce(sum(e.amount), 0) from Expense e where e.trip.id = :tripId")
     BigDecimal sumAmountByTripId(@Param("tripId") Long tripId);
 
