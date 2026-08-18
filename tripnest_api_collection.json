@@ -1,0 +1,241 @@
+{
+  "info": {
+    "name": "TripNest REST API Collection",
+    "description": "Comprehensive Postman collection covering all REST API endpoints for TripNest Travel Planning & Trip Management Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register Traveler",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newtraveler@tripnest.com\",\n  \"password\": \"password123\",\n  \"fullName\": \"Alex Rivera\",\n  \"phone\": \"+1555123456\",\n  \"travelPreferences\": \"Backpacking, Hiking, Foodie\",\n  \"role\": \"ROLE_TRAVELER\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register" }
+          }
+        },
+        {
+          "name": "Login (Traveler)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"traveler@tripnest.com\",\n  \"password\": \"traveler123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login" }
+          }
+        },
+        {
+          "name": "Login (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@tripnest.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login" }
+          }
+        },
+        {
+          "name": "OAuth2 Google Sign-In",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"google.user@tripnest.com\",\n  \"fullName\": \"Google Explorer\",\n  \"avatarUrl\": \"https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150\",\n  \"provider\": \"GOOGLE\",\n  \"providerId\": \"google-12345\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/oauth2/google" }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"traveler@tripnest.com\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/forgot-password" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. User & Profile",
+      "item": [
+        {
+          "name": "Get Current Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/users/me" }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Maya Lin (Explorer)\",\n  \"bio\": \"Solo traveler & travel blogger\",\n  \"phone\": \"+1 (555) 987-6543\",\n  \"travelPreferences\": \"Cultural, Photography, Beach\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users/profile" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Destinations",
+      "item": [
+        {
+          "name": "List All Destinations",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/destinations" }
+          }
+        },
+        {
+          "name": "Get Popular Destinations",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/destinations/popular" }
+          }
+        },
+        {
+          "name": "Get Destination Weather",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/destinations/1/weather" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Trips & Itineraries",
+      "item": [
+        {
+          "name": "Create Trip",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Kyoto Cherry Blossom Tour\",\n  \"destination\": \"Kyoto, Japan\",\n  \"startDate\": \"2026-10-01\",\n  \"endDate\": \"2026-10-06\",\n  \"totalBudget\": 2200.0,\n  \"status\": \"PLANNED\",\n  \"visibility\": \"PRIVATE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/trips" }
+          }
+        },
+        {
+          "name": "List User Trips",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/trips" }
+          }
+        },
+        {
+          "name": "Get Trip Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/trips/1" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Budget & Expenses",
+      "item": [
+        {
+          "name": "Get Trip Budget",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/trips/1/budget" }
+          }
+        },
+        {
+          "name": "Add Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Dinner at Michelin Bistro\",\n  \"amount\": 85.50,\n  \"category\": \"FOOD\",\n  \"expenseDate\": \"2026-08-17\",\n  \"paymentMethod\": \"CREDIT_CARD\",\n  \"notes\": \"Degustation menu with group\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/trips/1/expenses" }
+          }
+        },
+        {
+          "name": "Get Group Expense Settlements",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/trips/1/members/settlement" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Analytics & Admin",
+      "item": [
+        {
+          "name": "Get Traveler Analytics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/analytics/traveler" }
+          }
+        },
+        {
+          "name": "Admin: Platform Statistics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/analytics" }
+          }
+        },
+        {
+          "name": "Admin: List All Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/users" }
+          }
+        }
+      ]
+    }
+  ]
+}

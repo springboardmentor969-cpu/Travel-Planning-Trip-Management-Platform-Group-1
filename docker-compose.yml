@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: tripnest-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tripnest
+      POSTGRES_USER: tripnest_user
+      POSTGRES_PASSWORD: tripnest_secure_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tripnest_user -d tripnest"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tripnest-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: tripnest
+      DB_USERNAME: tripnest_user
+      DB_PASSWORD: tripnest_secure_password
+      APP_JWT_SECRET: 9a6747f3a18e00d92e884e4935728f2e6315747b887e323a0e161b9a0c16b7202d81cf8b02e7970f609b664f9746b140
+      APP_CORS_ALLOWED_ORIGINS: http://localhost,http://localhost:80,http://localhost:5173
+    ports:
+      - "8080:8080"
+    volumes:
+      - backend_uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tripnest-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_data:
+  backend_uploads:

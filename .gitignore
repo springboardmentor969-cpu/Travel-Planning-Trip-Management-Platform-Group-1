@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+backend/target/
+frontend/dist/
+target/
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
+
+# Environment & Logs
+*.log
+.env
+.env.local
+.env.*.local
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Database & Uploads
+backend/data/
+backend/uploads/
+!backend/uploads/.gitkeep
