@@ -1,12 +1,12 @@
 package com.tripnest.tripnest.client;
 
-import org.springframework.stereotype.Component;
-import org.springframework.retry.annotation.Retryable;
-import org.springframework.retry.annotation.Backoff;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ImageClient {
@@ -30,3 +30,4 @@ public class ImageClient {
         return gallery;
     }
 }
+
